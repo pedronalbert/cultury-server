@@ -36,7 +36,11 @@ module.exports.routes = {
   'get /articles/:articleId': 'ArticlesController.show',
   'post /articles': 'ArticlesController.create',
   'put /articles/:articleId': 'ArticlesController.update',
-  'delete /articles/:articleId': 'ArticlesController.destroy'
+  'delete /articles/:articleId': 'ArticlesController.destroy',
+  //ArticlesRequests
+  'get /articles-requests': 'ArticlesRequestsController.index',
+  'post /articles-requests': 'ArticlesRequestsController.create',
+  'delete /articles-requests/:articleId': 'ArticlesRequestsController.destroy'
 
   /***************************************************************************
   *                                                                          *

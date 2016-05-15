@@ -1,0 +1,26 @@
+{
+  "name": "cultury-server",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Cultury App Server",
+  "keywords": [],
+  "dependencies": {
+    "include-all": "~0.1.6",
+    "rc": "1.0.1",
+    "sails": "~0.12.3",
+    "sails-disk": "~0.10.9",
+    "sails-hook-validation": "^0.4.6"
+  },
+  "scripts": {
+    "debug": "node debug app.js",
+    "start": "node app.js",
+    "forever": "forever start -w app.js --harmony && forever logs -f 0"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pedronalbert/cultury-server.git"
+  },
+  "author": "pedronalbert",
+  "license": ""
+}

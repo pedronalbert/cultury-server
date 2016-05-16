@@ -6,7 +6,7 @@ let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
 let ArticleRequestEntity = require('../entities/ArticleRequestEntity');
 
-let ArticlesRequestRepository = {
+let ArticlesRepository = {
   find (criteria) {
     return new Promise((resolve, reject) => {
       ArticleRequest
@@ -47,4 +47,4 @@ let ArticlesRequestRepository = {
   }
 };
 
-module.exports = ArticlesRequestRepository;
+module.exports = ArticlesRepository;

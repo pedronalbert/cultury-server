@@ -3,14 +3,14 @@ let Promise = require('bluebird');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
 
-class ArticleRequestEntity {
+class PublishRequestEntity {
   constructor (model) {
     this._setAttributes(model);
   }
 
   destroy () {
     return new Promise((resolve, reject) => {
-      ArticleRequest.destroy({id: this.id})
+      PublishRequest.destroy({id: this.id})
         .then(() => {
           return resolve(this);
         })
@@ -49,10 +49,10 @@ class ArticleRequestEntity {
     });
   }
   
-  update (newArticleData) {
+  update (updateData) {
     return new Promise((resolve, reject) => {
 
-      ArticleRequest.update({id: this.id}, newArticleData)
+      PublishRequest.update({id: this.id}, updateData)
         .then(articlesUpdated => {
           this._setAttributes(articlesUpdated[0]);
 
@@ -89,4 +89,4 @@ class ArticleRequestEntity {
   }
 };
 
-module.exports = ArticleRequestEntity;
+module.exports = PublishRequestEntity;

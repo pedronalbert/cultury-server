@@ -4,12 +4,12 @@ let Promise = require('bluebird');
 let EntityNotFoundError = require('../errors/EntityNotFoundError');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
-let ArticleRequestEntity = require('../entities/ArticleRequestEntity');
+let PublishRequestEntity = require('../entities/PublishRequestEntity');
 
-let ArticlesRepository = {
+let PublishRequestRepository = {
   find (criteria) {
     return new Promise((resolve, reject) => {
-      ArticleRequest
+      PublishRequest
         .find(criteria)
         .then(resolve);
     });
@@ -17,28 +17,28 @@ let ArticlesRepository = {
 
   findOne (criteria) {
     return new Promise((resolve, reject) => {
-      ArticleRequest
+      PublishRequest
         .findOne(criteria)
-        .then(articleFound => {
-          if (_.isUndefined(articleFound)) {
+        .then(publishRequestFound => {
+          if (_.isUndefined(publishRequestFound)) {
             return reject(new EntityNotFoundError('Artículo no encontrado'))
           }
 
-          return resolve(new ArticleRequestEntity(articleFound));
+          return resolve(new PublishRequestEntity(publishRequestFound));
         });
     });
   },
 
   create (newArticleData) {
     return new Promise ((resolve, reject) => {
-      ArticleRequest
+      PublishRequest
         .create(newArticleData)
         .then(articleCreated => {
           return resolve(articleCreated);
         })
         .catch(err => {
           if (err.code == 'E_VALIDATION') {
-            return reject(new ValidationError('Artículo no ha podido ser publicado', err.Errors));
+            return reject(new ValidationError('Petición no ha podido ser creada', err.Errors));
           }
 
           return reject(new DatabaseError('Error en el servidor, intente más tarde'));
@@ -47,4 +47,4 @@ let ArticlesRepository = {
   }
 };
 
-module.exports = ArticlesRepository;
+module.exports = PublishRequestRepository;

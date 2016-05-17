@@ -38,13 +38,12 @@ module.exports.routes = {
   'put /articles/:articleId': 'ArticlesController.update',
   'delete /articles/:articleId': 'ArticlesController.destroy',
   //ArticlesRequests
-  'get /articles-requests': 'ArticlesRequestsController.index',
-  'get /articles-requests/:articleId': 'ArticlesRequestsController.show',
-  'post /articles-requests': 'ArticlesRequestsController.create',
-  'put /articles-requests/:articleId': 'ArticlesRequestsController.update',
-  'delete /articles-requests/:articleId': 'ArticlesRequestsController.destroy',
-  'post /articles-requests/:articleId/actions/publish': 'ArticlesRequestsController.publishAction',
-  'post /articles-requests/:articleId/actions/deny': 'ArticlesRequestsController.denyAction',
+  'get /publish-requests': 'PublishRequestsController.index',
+  'get /publish-requests/:publishRequestId': 'PublishRequestsController.show',
+  'post /publish-requests': 'PublishRequestsController.create',
+  'put /publish-requests/:publishRequestId': 'PublishRequestsController.update',
+  'post /publish-requests/:publishRequestId/actions/publish': 'PublishRequestsController.publishAction',
+  'post /publish-requests/:publishRequestId/actions/deny': 'PublishRequestsController.denyAction',
 
   //ArticlesEditRequests
   'get /articles-edit-requests': 'ArticlesEditRequestsController.index',

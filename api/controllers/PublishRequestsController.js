@@ -1,48 +1,48 @@
 'use strict';
 
-let ArticlesRequestsRepository = require('../repositories/ArticlesRequestsRepository');
+let PublishRequestRepository = require('../repositories/PublishRequestRepository');
 let EntityNotFoundError = require('../errors/EntityNotFoundError');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
 
 module.exports = {
   index (req, res) {
-    ArticlesRequestsRepository
+    PublishRequestRepository
       .find()
-      .then(articles => res.json(articles));
+      .then(publishRequests => res.json(publishRequests));
   },
 
   create (req, res) {
-    let newArticleData = {
+    let createData = {
       title: req.param('title'),
       content: req.param('content'),
       imageUrl: req.param('imageUrl'),
       category: req.param('category')
     };
 
-    ArticlesRequestsRepository
-      .create(newArticleData)
-      .then(articleCreated => {
-        return res.json(articleCreated);
+    PublishRequestRepository
+      .create(createData)
+      .then(publishRequestCreated => {
+        return res.json(publishRequestCreated);
       })
       .catch(ValidationError, err => res.validationError(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
   show (req, res) {
-    let articleId = req.params.articleId;
+    let publishRequestId = req.params.publishRequestId;
 
-    ArticlesRequestsRepository
-      .findOne({id: articleId})
-      .then(articleFound => {
-        return res.json(articleFound);
+    PublishRequestRepository
+      .findOne({id: publishRequestId})
+      .then(publishRequestFound => {
+        return res.json(publishRequestFound);
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
   update (req, res) {
-    let articleId = req.params.articleId;
+    let publishRequestId = req.params.publishRequestId;
     let updateData = {
       title: req.param('title'),
       content: req.param('content'),
@@ -50,36 +50,21 @@ module.exports = {
       category: req.param('category')
     };
 
-    ArticlesRequestsRepository
-      .findOne({id: articleId})
-      .then(articleFound => {
-        return articleFound.update(updateData);
+    PublishRequestRepository
+      .findOne({id: publishRequestId})
+      .then(publishRequestFound => {
+        return publishRequestFound.update(updateData);
       })
-      .then(articleUpdated => {
-        return res.json(articleUpdated);
+      .then(publishRequestUpdated => {
+        return res.json(publishRequestUpdated);
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))
       .catch(ValidationError, err => res.validationError(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
-  destroy (req, res) {
-    let articleId = req.params.articleId;
-
-    ArticlesRequestsRepository
-      .findOne({id: articleId})
-      .then(articleFound => {
-        return articleFound.destroy();
-      })
-      .then(articleDestroyed => {
-        return res.json({message: 'Articulo eliminado'});
-      })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(DatabaseError, err => res.serverError(err.message));
-  },
-
   publishAction (req, res) {
-    let articleId = req.params.articleId;
+    let publishRequestId = req.params.publishRequestId;
     let articleData = {
       title: req.param('title'),
       content: req.param('content'),
@@ -87,10 +72,10 @@ module.exports = {
       category: req.param('category')
     };
 
-    ArticlesRequestsRepository
-      .findOne({id: articleId})
-      .then(articleFound => {
-        return articleFound.publish(articleData);
+    PublishRequestRepository
+      .findOne({id: publishRequestId})
+      .then(publishRequestFound => {
+        return publishRequestFound.publish(articleData);
       })
       .then(articlePublished => {
         return res.json({
@@ -107,15 +92,15 @@ module.exports = {
    *  @todo Send email with deny reason
    */
   denyAction (req, res) {
-    let articleId = req.params.articleId;
+    let publishRequestId = req.params.publishRequestId;
     let reason = req.param('reason');
 
-    ArticlesRequestsRepository
-      .findOne({id: articleId})
-      .then(articleFound => {
-        return articleFound.destroy();
+    PublishRequestRepository
+      .findOne({id: publishRequestId})
+      .then(publishRequestFound => {
+        return publishRequestFound.destroy();
       })
-      .then(articleRequest => {
+      .then(PublishRequest => {
         return res.json({message: 'Articulo Negado'});
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))

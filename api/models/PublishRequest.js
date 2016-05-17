@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  tableName: 'articles_requests',
+  tableName: 'publish_requests',
 
   attributes: {
     title: {

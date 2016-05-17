@@ -59,7 +59,7 @@ module.exports.routes = {
   'put /users/:id/actions/change-password': 'UsersController.changePassword',
   //AuthController
   'post /login': 'AuthController.login',
-  'post /logout': 'AuthController.logout',
+  'get /logout': 'AuthController.logout',
   'get /me': 'AuthController.me'
 
   /***************************************************************************

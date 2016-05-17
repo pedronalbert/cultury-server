@@ -15,7 +15,11 @@ passport.deserializeUser(function(id, done) {
   UserRepository
     .findOne({id: id})
     .then(userFound => done(null, userFound))
-    .catch(err => done(err));
+    .catch(err => {
+      sails.log.error(err);
+
+      done(err);
+    });
 });
 
 passport.use(new LocalStrategy(

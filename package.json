@@ -13,13 +13,13 @@
     "rc": "1.0.1",
     "sails": "~0.12.3",
     "sails-disk": "~0.10.9",
+    "sails-hook-requestlogger": "^1.0.0",
     "sails-hook-validation": "^0.4.6",
     "sails-mysql": "^0.12.1"
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js",
-    "forever": "forever start -w app.js --harmony && forever logs -f 0"
+    "start": "node app.js"
   },
   "main": "app.js",
   "repository": {
@@ -27,5 +27,8 @@
     "url": "git://github.com/pedronalbert/cultury-server.git"
   },
   "author": "pedronalbert",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "sails-hook-autoreload": "^0.13.1"
+  }
 }

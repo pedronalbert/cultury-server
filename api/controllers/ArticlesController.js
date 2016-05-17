@@ -23,7 +23,7 @@ module.exports = {
     ArticlesRepository
       .create(newArticleData)
       .then(articleCreated => {
-        return res.json(articleCreated);
+        return res.json(articleCreated); 
       })
       .catch(ValidationError, err => res.validationError(err))
       .catch(DatabaseError, err => res.serverError(err.message));

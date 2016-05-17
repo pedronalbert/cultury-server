@@ -50,7 +50,17 @@ module.exports.routes = {
   'post /articles-edit-requests': 'ArticlesEditRequestsController.create',
   'post /articles-edit-requests/:editRequestId': 'ArticlesEditRequestsController.update',
   'post /articles-edit-requests/:editRequestId/actions/publish': 'ArticlesEditRequestsController.publishAction',
-  'post /articles-edit-requests/:editRequestId/actions/deny': 'ArticlesEditRequestsController.denyAction'
+  'post /articles-edit-requests/:editRequestId/actions/deny': 'ArticlesEditRequestsController.denyAction',
+  //UsersController
+  'get /users': 'UsersController.index',
+  'get /users/:id': 'UsersController.show',
+  'post /users': 'UsersController.create',
+  'put /users/:id': 'UsersController.update',
+  'put /users/:id/actions/change-password': 'UsersController.changePassword',
+  //AuthController
+  'post /login': 'AuthController.login',
+  'post /logout': 'AuthController.logout',
+  'get /me': 'AuthController.me'
 
   /***************************************************************************
   *                                                                          *

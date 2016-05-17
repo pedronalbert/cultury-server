@@ -20,27 +20,19 @@ class ArticleRequestEntity {
     });
   }
 
-  publish () {
-    let articleData, articleCreated;
+  publish (articleData) {
+    let articleCreated;
 
     return new Promise((resolve, reject) => {
-      articleData = {
-        title: this.title,
-        content: this.content,
-        imageUrl: this.imageUrl,
-        category: this.category
-      };
 
       Article
         .create(articleData)
         .then(article => {
-          sails.log.info('Article Created! #' + article.id);
           articleCreated = article;
 
           return this.destroy();
         })
         .then(() => {
-          sails.log.info('ArticleRequest Deleted! #' + this.id);
 
           return resolve(articleCreated);
         })

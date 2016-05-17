@@ -80,11 +80,17 @@ module.exports = {
 
   publishAction (req, res) {
     let articleId = req.params.articleId;
+    let articleData = {
+      title: req.param('title'),
+      content: req.param('content'),
+      imageUrl: req.param('imageUrl'),
+      category: req.param('category')
+    };
 
     ArticlesRequestsRepository
       .findOne({id: articleId})
       .then(articleFound => {
-        return articleFound.publish();
+        return articleFound.publish(articleData);
       })
       .then(articlePublished => {
         return res.json({

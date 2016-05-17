@@ -17,8 +17,7 @@ module.exports = {
       title: req.param('title'),
       content: req.param('content'),
       imageUrl: req.param('imageUrl'),
-      category: req.param('category'),
-      state: 'waiting'
+      category: req.param('category')
     };
 
     ArticlesRequestsRepository
@@ -44,7 +43,7 @@ module.exports = {
 
   update (req, res) {
     let articleId = req.params.articleId;
-    let newArticleData = {
+    let updateData = {
       title: req.param('title'),
       content: req.param('content'),
       imageUrl: req.param('imageUrl'),
@@ -54,7 +53,7 @@ module.exports = {
     ArticlesRequestsRepository
       .findOne({id: articleId})
       .then(articleFound => {
-        return articleFound.update(newArticleData);
+        return articleFound.update(updateData);
       })
       .then(articleUpdated => {
         return res.json(articleUpdated);
@@ -76,7 +75,6 @@ module.exports = {
         return res.json({message: 'Articulo eliminado'});
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -88,10 +86,10 @@ module.exports = {
       .then(articleFound => {
         return articleFound.publish();
       })
-      .then(newArticle => {
+      .then(articlePublished => {
         return res.json({
           message: 'Articulo Publicado',
-          articulo: newArticle
+          article: articlePublished
         });
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))
@@ -99,19 +97,22 @@ module.exports = {
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
+  /**
+   *  @todo Send email with deny reason
+   */
   denyAction (req, res) {
     let articleId = req.params.articleId;
+    let reason = req.param('reason');
 
     ArticlesRequestsRepository
       .findOne({id: articleId})
       .then(articleFound => {
-        return articleFound.deny();
+        return articleFound.destroy();
       })
       .then(articleRequest => {
-        return res.json({message: 'Articulo Denegado'});
+        return res.json({message: 'Articulo Negado'});
       })
       .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   }
 };

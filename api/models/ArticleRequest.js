@@ -23,18 +23,13 @@ module.exports = {
     category: {
       type: 'string',
       required: true
-    },
-
-    state: {
-      type: 'string',
-      in: ['waiting', 'published', 'denied']
     }
   },
 
   validationMessages: {
     title: {
       required: 'El título es obligatorio',
-      unique: 'Ya existe un artículo con este título'
+      unique: 'Ya existe una petición con este título'
     },
 
     content: {

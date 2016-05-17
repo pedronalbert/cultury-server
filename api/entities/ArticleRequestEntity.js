@@ -2,7 +2,6 @@
 let Promise = require('bluebird');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
-let EntityNotFoundError = require('../errors/EntityNotFoundError');
 
 class ArticleRequestEntity {
   constructor (model) {
@@ -16,7 +15,7 @@ class ArticleRequestEntity {
           return resolve(this);
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en la base de datos, intente más tarde'));
+          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
         });
     });
   }
@@ -25,14 +24,6 @@ class ArticleRequestEntity {
     let articleData, articleCreated;
 
     return new Promise((resolve, reject) => {
-      if (this.state == 'published') {
-        return reject(new ValidationError('Artículo ya ha sido publicado'));
-      }
-
-      if (this.state == 'denied') {
-        return reject(new ValidationError('Artículo ya ha sido denegado'));
-      }
-
       articleData = {
         title: this.title,
         content: this.content,
@@ -44,12 +35,12 @@ class ArticleRequestEntity {
         .create(articleData)
         .then(article => {
           sails.log.info('Article Created! #' + article.id);
-
           articleCreated = article;
-          return this.update({state: 'published'});
+
+          return this.destroy();
         })
-        .then(articleRequest => {
-          sails.log.info('ArticleRequest Change state to published! #' + articleRequest.id);
+        .then(() => {
+          sails.log.info('ArticleRequest Deleted! #' + this.id);
 
           return resolve(articleCreated);
         })
@@ -65,28 +56,6 @@ class ArticleRequestEntity {
         .catch(ValidationError, DatabaseError, err => reject(err));
     });
   }
-
-  deny () {
-    return new Promise((resolve, reject) => {
-
-      if (this.state == 'published') {
-        return reject(new ValidationError('Artículo ya ha sido publicado'));
-      }
-
-      if (this.state == 'denied') {
-        return reject(new ValidationError('Artículo ya ha sido denegado'));
-      }
-
-      this
-        .update({state: 'denied'})
-        .then(articleRequest => {
-          sails.log.info('ArticleRequest Denied! ' + articleRequest.id);
-
-          return resolve(articleRequest);
-        })
-        .catch(reject);
-    })
-  }
   
   update (newArticleData) {
     return new Promise((resolve, reject) => {
@@ -101,7 +70,7 @@ class ArticleRequestEntity {
           sails.log.error(err);
 
           if (err.code == 'E_VALIDATION') {
-            return reject(new ValidationError('Artículo no ha podido ser actualizado', err.Errors));
+            return reject(new ValidationError('Artículo no ha podido ser editado', err.Errors));
           }
 
           return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
@@ -122,7 +91,6 @@ class ArticleRequestEntity {
       content: this.content,
       imageUrl: this.imageUrl,
       category: this.category,
-      state: this.state,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

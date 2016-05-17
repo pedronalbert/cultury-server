@@ -46,6 +46,13 @@ module.exports.routes = {
   'post /articles-requests/:articleId/actions/publish': 'ArticlesRequestsController.publishAction',
   'post /articles-requests/:articleId/actions/deny': 'ArticlesRequestsController.denyAction',
 
+  //ArticlesEditRequests
+  'get /articles-edit-requests': 'ArticlesEditRequestsController.index',
+  'post /articles-edit-requests': 'ArticlesEditRequestsController.create',
+  'post /articles-edit-requests/:editRequestId': 'ArticlesEditRequestsController.update',
+  'post /articles-edit-requests/:editRequestId/actions/publish': 'ArticlesEditRequestsController.publishAction',
+  'post /articles-edit-requests/:editRequestId/actions/deny': 'ArticlesEditRequestsController.denyAction'
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

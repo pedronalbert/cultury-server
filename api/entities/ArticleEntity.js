@@ -25,6 +25,10 @@ class ArticleEntity {
     });
   }
 
+  /**
+   * @todo Delete all references
+   */
+
   destroy () {
     return new Promise((resolve, reject) => {
       Article.destroy({id: this.id})

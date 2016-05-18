@@ -36,7 +36,7 @@ class ArticleEntity {
           return resolve(this);
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en la base de datos, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

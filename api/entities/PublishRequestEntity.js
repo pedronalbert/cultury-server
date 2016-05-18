@@ -15,7 +15,7 @@ class PublishRequestEntity {
           return resolve(this);
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }
@@ -43,7 +43,7 @@ class PublishRequestEntity {
             return reject(new ValidationError('Artículo no ha podido ser publicado', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          return reject(new DatabaseError());
         })
         .catch(ValidationError, DatabaseError, err => reject(err));
     });
@@ -65,7 +65,7 @@ class PublishRequestEntity {
             return reject(new ValidationError('Artículo no ha podido ser editado', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

@@ -41,7 +41,7 @@ let PublishRequestRepository = {
             return reject(new ValidationError('Petición no ha podido ser creada', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

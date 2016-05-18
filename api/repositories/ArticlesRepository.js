@@ -41,7 +41,7 @@ let ArticlesRepository = {
             return reject(new ValidationError('Artículo no ha podido ser publicado', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

@@ -18,7 +18,7 @@ class ArticleRequestEntity {
           return resolve(this);
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }
@@ -60,7 +60,7 @@ class ArticleRequestEntity {
             return reject(new ValidationError('Peticion de edición no encontrada', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

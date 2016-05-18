@@ -24,7 +24,7 @@ class UserEntity {
             return reject(new ValidationError('Usuario no ha podido ser actualizado', err.Errors));
           }
 
-          return reject(new DatabaseError('Error en el servidor, intente más tarde'));
+          return reject(new DatabaseError());
         });
     });
   }

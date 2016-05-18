@@ -36,8 +36,9 @@ class UserEntity {
           .then(resolve)
           .catch(reject);
       } else {
-        let validationError = new ValidationError('No se ha podido cambiar la contraseña');
-        validationError.addAttribute('oldPassword', 'Contraseña incorrecta');
+        let validationError = new ValidationError('No se ha podido cambiar la contraseña', {
+          oldPassword: 'Contraseña incorrecta'
+        });
 
         return reject(validationError);
       }

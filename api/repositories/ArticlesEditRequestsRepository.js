@@ -46,8 +46,9 @@ let ArticlesEditRequestsRepository = {
         })
         .catch(DatabaseError, err => reject(err))
         .catch(EntityNotFoundError, err => {
-          validationError = new ValidationError('No se ha podido crear la petición');
-          validationError.addAttribute('article', 'Artículo no existe');
+          validationError = new ValidationError('No se ha podido crear la petición', {
+            article: 'Artículo no existe'
+          });
 
           return reject(validationError)
         })

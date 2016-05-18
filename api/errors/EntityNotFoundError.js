@@ -6,6 +6,12 @@ class EntityNotFoundError extends ExtentendableError {
     super(message);
     this.name = 'EntityNotFoundError';
   }
+
+  toJSON () {
+    return {
+      message: this.message
+    };
+  }
 }
 
 module.exports = EntityNotFoundError;

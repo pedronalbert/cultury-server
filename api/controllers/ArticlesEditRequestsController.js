@@ -26,8 +26,8 @@ module.exports = {
       .then(editRequest => {
         return res.json(editRequest);
       })
-      .catch(ValidationError, err => res.validationError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(ValidationError, err => res.badRequest(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -48,8 +48,8 @@ module.exports = {
       .then(editRequestUpdated => {
         return res.json(editRequestUpdated);
       })
-      .catch(ValidationError, err => res.validationError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(ValidationError, err => res.badRequest(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -70,8 +70,8 @@ module.exports = {
       .then(articleUpdated => {
         return res.json(articleUpdated);
       })
-      .catch(ValidationError, err => res.validationError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(ValidationError, err => res.badRequest(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -90,7 +90,7 @@ module.exports = {
       .then(() => {
         return res.json({message: 'Petición Negada'});
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   }
 };

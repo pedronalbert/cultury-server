@@ -19,7 +19,7 @@ module.exports = {
           data: users
         });
       })
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   create (req, res) {
@@ -32,10 +32,8 @@ module.exports = {
           data: userCreated
         });
       })
-      .catch(DatabaseError, err => res.serverError(err.message))
-      .catch(ValidationError, err => {
-        return res.validationError(err);
-      });
+      .catch(DatabaseError, err => res.serverError(err))
+      .catch(ValidationError, err => res.badRequest(err)); 
   },
 
   show (req, res) {
@@ -48,8 +46,8 @@ module.exports = {
           data: userFound
         });
       })
-      .catch(DatabaseError, err => res.serverError(err.message))
-      .catch(EntityNotFoundError, err => res.notFound(err.message));
+      .catch(DatabaseError, err => res.serverError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err));
   },
 
   update (req, res) {
@@ -66,9 +64,9 @@ module.exports = {
           data: userUpdated
         });
       })
-      .catch(DatabaseError, err => res.serverError(err.message))
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err));
+      .catch(DatabaseError, err => res.serverError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err));
   },
 
   changePassword (req, res) {
@@ -84,9 +82,9 @@ module.exports = {
       .then(userUpdated => {
         return res.json({message: 'Contraseña actualizada exitosamente'});
       })
-      .catch(DatabaseError, err => res.serverError(err.message))
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err));
+      .catch(DatabaseError, err => res.serverError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err));
   }
 };
 

@@ -25,7 +25,7 @@ module.exports = {
       .then(articleCreated => {
         return res.json(articleCreated); 
       })
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -37,7 +37,7 @@ module.exports = {
       .then(articleFound => {
         return res.json(articleFound);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -58,8 +58,8 @@ module.exports = {
       .then(articleUpdated => {
         return res.json(articleUpdated);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -74,8 +74,8 @@ module.exports = {
       .then(articleDestroyed => {
         return res.json({message: 'Articulo eliminado'});
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   }
 };

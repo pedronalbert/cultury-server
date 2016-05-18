@@ -17,16 +17,18 @@
  * automatically.
  */
 
-module.exports = function notFound (message) {
+ 'use strict';
+
+module.exports = function notFound (data) {
 
   // Get access to `req`, `res`, & `sails`
-  var req = this.req;
-  var res = this.res;
+  let req = this.req;
+  let res = this.res;
 
   // Set status code
   res.status(404);
 
-  res.json({message: message});
+  res.json(data);
 
 };
 

@@ -22,7 +22,9 @@ module.exports = {
           return resolve(usersEntities);
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          sails.log.error(err);
+
+          return reject(new DatabaseError());
         });
     });
   },
@@ -39,7 +41,9 @@ module.exports = {
           return resolve(new UserEntity(userFound));
         })
         .catch(err => {
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          sails.log.error(err);
+
+          return reject(new DatabaseError());
         });
     })
   },
@@ -54,7 +58,8 @@ module.exports = {
             return reject(new ValidationError('Usuario no ha podido ser registrado', err.Errors));
           }
           
-          return reject(new DatabaseError('Error en el servidor, intente mas tarde'));
+          sails.log.error(err);
+          return reject(new DatabaseError());
         });
     });
   }

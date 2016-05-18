@@ -5,15 +5,27 @@ class ValidationError extends ExtentendableError {
   constructor(message, attributes) {
     super(message);
     this.name = 'ValidationError';
-    this.attributes = attributes || {};
+    this.attributes = attributes;
   }
 
-  addAttribute (inputName, message) {
-    if (!_.has(this.attributes, inputName)) {
-      this.attributes[inputName] = [];
-    }
+  toJSON () {
+    let json = {
+      code: this.name,
+      title: this.message,
+      detail: {
+        attributes: {}
+      }
+    };
 
-    this.attributes[inputName].push({message: message});
+    _.each(this.attributes, (errors, attributeName) => {
+      if (_.isArray(errors)) {
+        json.detail.attributes[attributeName] = errors[0].message;
+      } else {
+        json.detail.attributes[attributeName] = errors;
+      }
+    });
+
+    return json;
   }
 }
 

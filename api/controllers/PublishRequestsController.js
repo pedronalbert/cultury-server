@@ -25,7 +25,7 @@ module.exports = {
       .then(publishRequestCreated => {
         return res.json(publishRequestCreated);
       })
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -37,7 +37,7 @@ module.exports = {
       .then(publishRequestFound => {
         return res.json(publishRequestFound);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -58,8 +58,8 @@ module.exports = {
       .then(publishRequestUpdated => {
         return res.json(publishRequestUpdated);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -83,8 +83,8 @@ module.exports = {
           article: articlePublished
         });
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
-      .catch(ValidationError, err => res.validationError(err))
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
@@ -103,7 +103,7 @@ module.exports = {
       .then(PublishRequest => {
         return res.json({message: 'Articulo Negado'});
       })
-      .catch(EntityNotFoundError, err => res.notFound(err.message))
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   }
 };

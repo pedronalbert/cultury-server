@@ -57,9 +57,11 @@ class UserEntity {
   toJSON () {
     return {
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
+      attributes: {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email
+      },
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

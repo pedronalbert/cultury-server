@@ -15,23 +15,22 @@ module.exports = {
     UserRepository
       .find()
       .then(users => {
-        return res.json(users);
+        return res.json({
+          data: users
+        });
       })
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
   create (req, res) {
-    let newUserData = {
-      firstName: req.param('firstName'),
-      lastName: req.param('lastName'),
-      email: req.param('email'),
-      password: req.param('password')
-    };
+    let createData = req.body;
 
     UserRepository
-      .create(newUserData)
+      .create(createData)
       .then(userCreated => {
-        return res.json(userCreated);
+        return res.created({
+          data: userCreated
+        });
       })
       .catch(DatabaseError, err => res.serverError(err.message))
       .catch(ValidationError, err => {

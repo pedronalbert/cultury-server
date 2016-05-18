@@ -44,7 +44,9 @@ module.exports = {
     UserRepository
       .findOne(userId)
       .then(userFound => {
-        return res.json(userFound);
+        return res.json({
+          data: userFound
+        });
       })
       .catch(DatabaseError, err => res.serverError(err.message))
       .catch(EntityNotFoundError, err => res.notFound(err.message));

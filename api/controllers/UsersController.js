@@ -54,19 +54,17 @@ module.exports = {
 
   update (req, res) {
     let userId = req.params.id;
-    let newUserData = {
-      firstName: req.param('firstName'),
-      lastName: req.param('lastName'),
-      email: req.param('email')
-    };
+    let updateData = req.body;
 
     UserRepository
       .findOne({id: userId})
       .then(userFound => {
-        return userFound.update(newUserData);
+        return userFound.update(updateData);
       })
       .then(userUpdated => {
-        return res.json(userUpdated);
+        return res.json({
+          data: userUpdated
+        });
       })
       .catch(DatabaseError, err => res.serverError(err.message))
       .catch(EntityNotFoundError, err => res.notFound(err.message))

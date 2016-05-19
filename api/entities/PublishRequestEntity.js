@@ -15,6 +15,7 @@ class PublishRequestEntity {
           return resolve(this);
         })
         .catch(err => {
+          sails.log.error(err);
           return reject(new DatabaseError());
         });
     });
@@ -37,12 +38,11 @@ class PublishRequestEntity {
           return resolve(articleCreated);
         })
         .catch(err => {
-          sails.log.error(err);
-
           if (err.code == 'E_VALIDATION') {
             return reject(new ValidationError('Artículo no ha podido ser publicado', err.Errors));
           }
 
+          sails.log.error(err);
           return reject(new DatabaseError());
         })
         .catch(ValidationError, DatabaseError, err => reject(err));
@@ -59,12 +59,11 @@ class PublishRequestEntity {
           return resolve(this);
         })
         .catch(err => {
-          sails.log.error(err);
-
           if (err.code == 'E_VALIDATION') {
             return reject(new ValidationError('Artículo no ha podido ser editado', err.Errors));
           }
 
+          sails.log.error(err);
           return reject(new DatabaseError());
         });
     });

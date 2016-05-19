@@ -11,7 +11,11 @@ let PublishRequestRepository = {
     return new Promise((resolve, reject) => {
       PublishRequest
         .find(criteria)
-        .then(resolve);
+        .then(resolve)
+        .catch(err => {
+          sails.log.error(err);
+          return reject(new DatabaseError());
+        });
     });
   },
 
@@ -25,7 +29,11 @@ let PublishRequestRepository = {
           }
 
           return resolve(new PublishRequestEntity(publishRequestFound));
-        });
+        })
+        .catch(err => {
+          sails.log.error(err);
+          return reject(new ValidationError());
+        })
     });
   },
 
@@ -40,7 +48,8 @@ let PublishRequestRepository = {
           if (err.code == 'E_VALIDATION') {
             return reject(new ValidationError('Petición no ha podido ser creada', err.Errors));
           }
-
+          
+          sails.log.error(err);
           return reject(new DatabaseError());
         });
     });

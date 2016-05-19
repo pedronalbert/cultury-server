@@ -23,6 +23,7 @@ class UserEntity {
           if (err.code == 'E_VALIDATION') {
             return reject(new ValidationError('Usuario no ha podido ser actualizado', err.Errors));
           }
+          sails.log.error(err);
 
           return reject(new DatabaseError());
         });

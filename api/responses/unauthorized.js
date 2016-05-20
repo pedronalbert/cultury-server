@@ -1,4 +1,4 @@
-module.exports = function notFound (message) {
+module.exports = function notFound (data) {
 
   // Get access to `req`, `res`, & `sails`
   var req = this.req;
@@ -7,8 +7,6 @@ module.exports = function notFound (message) {
   // Set status code
   res.status(401);
 
-  return res.json({
-    message: message
-  });
+  return res.json(data);
 };
 

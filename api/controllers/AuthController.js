@@ -5,11 +5,11 @@ module.exports = {
   login (req, res) {
     passport.authenticate('local', function(err, user, info) {
       if (err) {
-        return res.unauthorized(err.message);
+        return res.unauthorized(err);
       } else{
         req.logIn(user, err => {
           if (err) {
-            return res.unauthorized('Error al iniciar session, intente mas tarde');
+            return res.unauthorized(err);
           }
 
           sails.log.info('Login success user #' + user.id);
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   logout (req, res) {
-    
+    req.logOut();
     return res.json({message: 'Session Finalizada'});
   },
 

@@ -17,7 +17,8 @@ module.exports = {
       title: req.param('title'),
       content: req.param('content'),
       imageUrl: req.param('imageUrl'),
-      category: req.param('category')
+      category: req.param('category'),
+      user: req.param('user')
     };
 
     PublishRequestRepository

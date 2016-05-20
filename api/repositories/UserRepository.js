@@ -2,7 +2,6 @@
 let Promise = require('bluebird');
 let bcrypt = require('bcrypt');
 let ValidationError = require('../errors/ValidationError');
-let EntityNotFoundError = require('../errors/EntityNotFoundError');
 let UserEntity = require('../entities/UserEntity');
 let DatabaseError = require('../errors/DatabaseError');
 
@@ -34,8 +33,8 @@ module.exports = {
       User
         .findOne(criteria)
         .then(userFound => {
-          if(_.isEmpty(userFound)) {
-            return reject(new EntityNotFoundError('Usuario no encontrado'));
+          if(_.isUndefined(userFound)) {
+            return resolve(undefined);
           }
 
           return resolve(new UserEntity(userFound));

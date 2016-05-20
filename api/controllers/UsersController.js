@@ -42,12 +42,15 @@ module.exports = {
     UserRepository
       .findOne(userId)
       .then(userFound => {
+        if (_.isUndefined(userFound)) {
+          return res.notFound(new EntityNotFoundError('Usuario no encontrado'));
+        }
+
         return res.json({
           data: userFound
         });
       })
-      .catch(DatabaseError, err => res.serverError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   update (req, res) {
@@ -57,6 +60,9 @@ module.exports = {
     UserRepository
       .findOne({id: userId})
       .then(userFound => {
+        if (_.isUndefined(userFound)) {
+          return res.notFound(new EntityNotFoundError('Usuario no encontrado'));
+        }
         return userFound.update(updateData);
       })
       .then(userUpdated => {
@@ -65,7 +71,6 @@ module.exports = {
         });
       })
       .catch(DatabaseError, err => res.serverError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err));
   },
 
@@ -77,13 +82,15 @@ module.exports = {
     UserRepository
       .findOne({id: userId})
       .then(userFound => {
+        if (_.isUndefined(userFound)) {
+          return res.notFound(new EntityNotFoundError('Usuario no encontrado'));
+        }
         return userFound.changePassword(oldPassword, newPassword);
       })
       .then(userUpdated => {
         return res.json({message: 'Contraseña actualizada exitosamente'});
       })
       .catch(DatabaseError, err => res.serverError(err))
-      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err));
   }
 };

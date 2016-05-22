@@ -8,7 +8,7 @@
  *
  */
 module.exports = function(req, res, next) {
-  if (req.user.email == 'pedron.albert@gmail.com') {
+  if (req.user && req.user.email == 'pedron.albert@gmail.com') {
     return next();
   }
 

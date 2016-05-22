@@ -79,15 +79,16 @@ describe.only('UsersController', () => {
 
     it('Responder 404', done => {
       request(sails.hooks.http.app)
-        .put('/users/99')
+        .put('/users/99/actions/change-password')
         .expect(404, done);
     });
 
-    it('Responser 400 con contraseña incorrecta', done => {
+    it('Responder 400 con contraseña incorrecta', done => {
       request(sails.hooks.http.app)
-        .put('/users/' + payloadUser.id)
+        .put('/users/' + payloadUser.id + '/actions/change-password')
         .send({oldPassword: null, newPassword: faker.internet.password()})
         .expect(400, done);
     });
+
   });
 });

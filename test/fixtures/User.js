@@ -12,5 +12,13 @@ module.exports = [
     "email": "user@gmail.com",
     "password": "123456",
     "role": "user"
+  },
+  {
+    "id": 3,
+    "firstName": "userTest",
+    "lastName": "userTest",
+    "email": "user2@gmail.com",
+    "password": "123456",
+    "role": "user"
   }
 ]

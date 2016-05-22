@@ -16,47 +16,78 @@ let generateNewUserData = () => {
 };
 
 
-describe('UsersController', () => {
-  let createData = generateNewUserData();
-  let userCreated;
+describe.only('UsersController', () => {
+  let payloadUser;
 
+  before(() => {
+    payloadUser = _.last(fixtures['user']);
+  })
   describe('#create', () => {
+    let createData = generateNewUserData();
+
     it('Responder 201', done => {
       request(sails.hooks.http.app)
         .post('/users')
         .send(createData)
-        .expect(201)
-        .end((err, res) => {
-          if (err) return done(err);
-          userCreated = res.body.data;
-          done();
-        })
+        .expect(201, done);
+    });
+
+    it('Responder 400 al intentar crear duplicado', done => {
+      request(sails.hooks.http.app)
+        .post('/users')
+        .send(createData)
+        .expect(400, done);
     });
   });
 
   describe('#show', () => {
-    it('Should response 200', done => {
+    it('Responder 200', done => {
       request(sails.hooks.http.app)
-        .get('/users/' + userCreated.id)
+        .get('/users/' + payloadUser.id)
         .expect(200, done);
+    });
+
+    it('Responder 404', done => {
+      request(sails.hooks.http.app)
+        .get('/users/99')
+        .expect(404, done);
     });
   });
 
   describe('#update', () => {
-    it('Should response 200', done => {
+    it('Responder 200', done => {
       request(sails.hooks.http.app)
-        .put('/users/' + userCreated.id)
+        .put('/users/' + payloadUser.id)
         .send(generateNewUserData())
         .expect(200, done);
+    });
+
+    it('Responder 404', done => {
+      request(sails.hooks.http.app)
+        .put('/users/99')
+        .expect(404, done);
     });
   });
 
   describe('#changePassword', () => {
-    it('Should response 200', done => {
+    it('Responder 200', done => {
       request(sails.hooks.http.app)
-        .put('/users/' + userCreated.id + '/actions/change-password')
-        .send({oldPassword: createData.password, newPassword: faker.internet.password()})
+        .put('/users/' + payloadUser.id + '/actions/change-password')
+        .send({oldPassword: payloadUser.password, newPassword: faker.internet.password()})
         .expect(200, done);
+    });
+
+    it('Responder 404', done => {
+      request(sails.hooks.http.app)
+        .put('/users/99')
+        .expect(404, done);
+    });
+
+    it('Responser 400 con contraseña incorrecta', done => {
+      request(sails.hooks.http.app)
+        .put('/users/' + payloadUser.id)
+        .send({oldPassword: null, newPassword: faker.internet.password()})
+        .expect(400, done);
     });
   });
 });

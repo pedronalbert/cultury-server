@@ -29,6 +29,8 @@ module.exports.policies = {
   // '*': true,
 
   PublishRequestsController: {
-    create: 'isLoggedIn'
+    '*': 'isLoggedIn',
+    publishAction: 'isAdmin',
+    denyAction: 'isAdmin'
   }
 };

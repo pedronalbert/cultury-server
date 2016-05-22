@@ -27,7 +27,10 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+  },
+  
   (email, password, done) => {
     UserRepository
       .findOne({email: email})
@@ -43,6 +46,7 @@ passport.use(new LocalStrategy(
         }
       })
       .catch(err => {
+        sails.log.error(err);
         done(new DatabaseError());
       })
   }

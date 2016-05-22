@@ -23,6 +23,10 @@ module.exports = {
     category: {
       type: 'string',
       required: true
+    },
+
+    user: {
+      model: 'user'
     }
   },
 

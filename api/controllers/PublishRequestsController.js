@@ -9,25 +9,21 @@ module.exports = {
   index (req, res) {
     PublishRequestRepository
       .find()
-      .then(publishRequests => res.json(publishRequests));
+      .then(publishRequests => res.json(publishRequests))
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   create (req, res) {
-    let createData = {
-      title: req.param('title'),
-      content: req.param('content'),
-      imageUrl: req.param('imageUrl'),
-      category: req.param('category'),
-      user: req.param('user')
-    };
+    let createData = req.body;
+    createData.user = req.user.id;
 
     PublishRequestRepository
       .create(createData)
       .then(publishRequestCreated => {
-        return res.json(publishRequestCreated);
+        return res.created(publishRequestCreated);
       })
       .catch(ValidationError, err => res.badRequest(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   show (req, res) {
@@ -36,24 +32,29 @@ module.exports = {
     PublishRequestRepository
       .findOne({id: publishRequestId})
       .then(publishRequestFound => {
+        if (_.isUndefined(publishRequestFound)) {
+          return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
+        }
         return res.json(publishRequestFound);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 
   update (req, res) {
     let publishRequestId = req.params.publishRequestId;
-    let updateData = {
-      title: req.param('title'),
-      content: req.param('content'),
-      imageUrl: req.param('imageUrl'),
-      category: req.param('category')
-    };
+    let updateData = req.body;
 
     PublishRequestRepository
       .findOne({id: publishRequestId})
       .then(publishRequestFound => {
+        if (_.isUndefined(publishRequestFound)) {
+          return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
+        }
+
+        if(publishRequestFound.user !== req.user.id) {
+          return res.unauthorized('Este artículo no te pertenece');
+        }
+
         return publishRequestFound.update(updateData);
       })
       .then(publishRequestUpdated => {
@@ -66,25 +67,20 @@ module.exports = {
 
   publishAction (req, res) {
     let publishRequestId = req.params.publishRequestId;
-    let articleData = {
-      title: req.param('title'),
-      content: req.param('content'),
-      imageUrl: req.param('imageUrl'),
-      category: req.param('category')
-    };
+    let articleData = req.body;
 
     PublishRequestRepository
       .findOne({id: publishRequestId})
       .then(publishRequestFound => {
+        if (_.isUndefined(publishRequestFound)) {
+          return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
+        }
+
         return publishRequestFound.publish(articleData);
       })
       .then(articlePublished => {
-        return res.json({
-          message: 'Articulo Publicado',
-          article: articlePublished
-        });
+        return res.created(articlePublished);
       })
-      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
@@ -99,12 +95,14 @@ module.exports = {
     PublishRequestRepository
       .findOne({id: publishRequestId})
       .then(publishRequestFound => {
+        if (_.isUndefined(publishRequestFound)) {
+          return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
+        }
         return publishRequestFound.destroy();
       })
       .then(PublishRequest => {
         return res.json({message: 'Articulo Negado'});
       })
-      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   }
 };

@@ -15,15 +15,16 @@ let generateNewUserData = () => {
   };
 };
 
-let userToCreate = generateNewUserData();
-let userCreated;
 
 describe('UsersController', () => {
+  let createData = generateNewUserData();
+  let userCreated;
+
   describe('#create', () => {
-    it('Should response con 201', done => {
+    it('Responder 201', done => {
       request(sails.hooks.http.app)
         .post('/users')
-        .send(userToCreate)
+        .send(createData)
         .expect(201)
         .end((err, res) => {
           if (err) return done(err);
@@ -54,7 +55,7 @@ describe('UsersController', () => {
     it('Should response 200', done => {
       request(sails.hooks.http.app)
         .put('/users/' + userCreated.id + '/actions/change-password')
-        .send({oldPassword: userToCreate.password, newPassword: faker.internet.password()})
+        .send({oldPassword: createData.password, newPassword: faker.internet.password()})
         .expect(200, done);
     });
   });

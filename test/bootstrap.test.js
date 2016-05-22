@@ -1,4 +1,7 @@
-var sails = require('sails');
+'use strict';
+
+let sails = require('sails');
+let Barrels = require('barrels');
 
 before(function(done) {
 
@@ -10,8 +13,16 @@ before(function(done) {
     port: 1338
   }, function(err, server) {
     if (err) return done(err);
-    // here you can load fixtures, etc.
-    done(err, sails);
+     // Load fixtures
+    var barrels = new Barrels();
+
+    // Save original objects in `fixtures` variable
+    global.fixtures = barrels.data;
+
+    // Populate the DB
+    barrels.populate(function(err) {
+      done(err, sails);
+    });
   });
 });
 

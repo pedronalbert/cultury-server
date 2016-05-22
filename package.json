@@ -22,7 +22,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js",
-    "test": "NODE_ENV=test mocha test/bootstrap.test.js test/integration/**/*.test.js",
+    "test": "NODE_ENV=test mocha test/bootstrap.test.js test/unit/**/*.test.js",
     "forever": "forever start -w app.js && forever logs -f 0"
   },
   "main": "app.js",
@@ -33,6 +33,7 @@
   "author": "pedronalbert",
   "license": "",
   "devDependencies": {
+    "barrels": "^1.6.4",
     "chai": "^3.5.0",
     "faker": "^3.1.0",
     "sails-hook-autoreload": "^0.13.1",

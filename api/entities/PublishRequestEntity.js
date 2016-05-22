@@ -2,6 +2,7 @@
 let Promise = require('bluebird');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
+let ArticleEntity = require('../entities/ArticleEntity');
 
 class PublishRequestEntity {
   constructor (model) {
@@ -30,12 +31,10 @@ class PublishRequestEntity {
         .create(articleData)
         .then(article => {
           articleCreated = article;
-
           return this.destroy();
         })
         .then(() => {
-
-          return resolve(articleCreated);
+          return resolve(new ArticleEntity(articleCreated));
         })
         .catch(err => {
           if (err.code == 'E_VALIDATION') {
@@ -78,10 +77,17 @@ class PublishRequestEntity {
   toJSON () {
     return {
       id: this.id,
-      title: this.title,
-      content: this.content,
-      imageUrl: this.imageUrl,
-      category: this.category,
+      attributes: {
+        title: this.title,
+        content: this.content,
+        imageUrl: this.imageUrl,
+        category: this.category,
+      },
+      relationships: {
+        user: {
+          id: this.user
+        }
+      },
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

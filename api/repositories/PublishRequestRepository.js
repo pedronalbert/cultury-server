@@ -25,14 +25,14 @@ let PublishRequestRepository = {
         .findOne(criteria)
         .then(publishRequestFound => {
           if (_.isUndefined(publishRequestFound)) {
-            return reject(new EntityNotFoundError('Artículo no encontrado'))
+            return resolve(undefined);
           }
 
           return resolve(new PublishRequestEntity(publishRequestFound));
         })
         .catch(err => {
           sails.log.error(err);
-          return reject(new ValidationError());
+          return reject(new DatabaseError());
         })
     });
   },
@@ -42,13 +42,12 @@ let PublishRequestRepository = {
       PublishRequest
         .create(newArticleData)
         .then(articleCreated => {
-          return resolve(articleCreated);
+          return resolve(new PublishRequestEntity(articleCreated));
         })
         .catch(err => {
           if (err.code == 'E_VALIDATION') {
             return reject(new ValidationError('Petición no ha podido ser creada', err.Errors));
           }
-          
           sails.log.error(err);
           return reject(new DatabaseError());
         });

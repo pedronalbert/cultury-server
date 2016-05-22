@@ -50,10 +50,17 @@ class ArticleEntity {
   toJSON () {
     return {
       id: this.id,
-      title: this.title,
-      content: this.content,
-      imageUrl: this.imageUrl,
-      category: this.category,
+      attributes: {
+        title: this.title,
+        content: this.content,
+        imageUrl: this.imageUrl,
+        category: this.category
+      },
+      relationships: {
+        user: {
+          id: this.user
+        }
+      },
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

@@ -10,7 +10,8 @@ before(function(done) {
 
   sails.lift({
     // configuration for testing purposes
-    port: 1338
+    port: 1338,
+    log: 'error'
   }, function(err, server) {
     if (err) return done(err);
      // Load fixtures

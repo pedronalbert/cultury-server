@@ -1,6 +1,5 @@
 module.exports = [
   {
-    "id": 1,
     "firstName": "admin",
     "lastName": "admin",
     "email": "admin@gmail.com",
@@ -8,7 +7,6 @@ module.exports = [
     "role": "admin"
   },
   {
-    "id": 2,
     "firstName": "user",
     "lastName": "user",
     "email": "user@gmail.com",

@@ -62,7 +62,7 @@ describe('PublishRequestsController', () => {
     });
   });
 
-  describe('Normal User login', () => {
+  describe('User login', () => {
     let createData = generateNewData();
     let publishRequestCreated;
     let userRequest;
@@ -113,10 +113,19 @@ describe('PublishRequestsController', () => {
     describe('#update', () => {
       it('Response 200', done => {
         userRequest
-          .put('/publish-requests/1')
+          .put('/publish-requests/' + publishRequestCreated.id)
           .send(generateNewData())
           .expect(200, done);
       });
+
+      it('Response 401 si el artículo no le pertenece', done => {
+        let otherPublishRequest = fixtures['publishrequest'][0];
+
+        userRequest
+          .put('/publish-requests/' + otherPublishRequest.id)
+          .send(generateNewData())
+          .expect(401, done);
+      })
     });
 
     describe('#publishAction', () => {
@@ -132,6 +141,44 @@ describe('PublishRequestsController', () => {
         userRequest
           .post('/publish-requests/1/actions/deny')
           .expect(401, done);
+      });
+    });
+  });
+
+  describe('Admin login', () => {
+    let adminRequest;
+
+    before(done => {
+      let adminData = fixtures['user'][0];
+      adminRequest = request.agent(sails.hooks.http.app);
+
+      adminRequest
+        .post('/login')
+        .send({
+          email: adminData.email,
+          password: adminData.password
+        })
+        .expect(200, done);
+    });
+
+    describe('#publishAction', () => {
+      it('Response 201', done => {
+        let publishRequest = fixtures['publishrequest'][1];
+
+        adminRequest
+          .post('/publish-requests/' + publishRequest.id  +'/actions/publish')
+          .send(generateNewData())
+          .expect(201, done);
+      });
+    });    
+
+    describe('#denyAction', () => {
+      it('Response 200', done => {
+        let publishRequest = fixtures['publishrequest'][2];
+
+        adminRequest
+          .post('/publish-requests/' + publishRequest.id  +'/actions/deny')
+          .expect(200, done);
       });
     });
   });

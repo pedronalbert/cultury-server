@@ -4,7 +4,7 @@ let passport = require('passport');
 module.exports = {
   login (req, res) {
     let email = req.param('email');
-    let password = req.param('passport');
+    let password = req.param('password');
 
     if (_.isEmpty(email) || _.isEmpty(password)) {
       return res.unauthorized({

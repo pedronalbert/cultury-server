@@ -4,6 +4,7 @@ let PublishRequestRepository = require('../repositories/PublishRequestRepository
 let EntityNotFoundError = require('../errors/EntityNotFoundError');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
+let AuthError = require('../errors/AuthError');
 
 module.exports = {
   index (req, res) {
@@ -53,8 +54,8 @@ module.exports = {
           return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
         }
 
-        if(publishRequestFound.user !== req.user.id) {
-          return res.unauthorized('Este artículo no te pertenece');
+        if (publishRequestFound.user != req.user.id) {
+          throw new AuthError('Este artículo no te pertenece');
         }
 
         return publishRequestFound.update(updateData);
@@ -64,6 +65,7 @@ module.exports = {
       })
       .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
+      .catch(AuthError, err => res.unauthorized(err))
       .catch(DatabaseError, err => res.serverError(err.message));
   },
 

@@ -20,7 +20,9 @@ module.exports = {
     PublishRequestRepository
       .create(createData)
       .then(publishRequestCreated => {
-        return res.created(publishRequestCreated);
+        return res.created({
+          data: publishRequestCreated
+        });
       })
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));

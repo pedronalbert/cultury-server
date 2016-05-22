@@ -37,12 +37,12 @@ let PublishRequestRepository = {
     });
   },
 
-  create (newArticleData) {
+  create (newPublisRequest) {
     return new Promise ((resolve, reject) => {
       PublishRequest
-        .create(newArticleData)
-        .then(articleCreated => {
-          return resolve(new PublishRequestEntity(articleCreated));
+        .create(newPublisRequest)
+        .then(publishRequestCreated => {
+          return resolve(new PublishRequestEntity(publishRequestCreated));
         })
         .catch(err => {
           if (err.code == 'E_VALIDATION') {

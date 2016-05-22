@@ -38,7 +38,7 @@ describe('PublishRequestsController', () => {
     describe('#publishAction', () => {
       it('Response 401', done => {
         request(sails.hooks.http.app)
-          .post('/publish-requests/1/publish-action')
+          .post('/publish-requests/1/actions/publish')
           .expect(401, done);
       });
     });    
@@ -46,7 +46,7 @@ describe('PublishRequestsController', () => {
     describe('#denyAction', () => {
       it('Response 401', done => {
         request(sails.hooks.http.app)
-          .post('/publish-requests/1/deny-action')
+          .post('/publish-requests/1/actions/deny')
           .expect(401, done);
       });
     });

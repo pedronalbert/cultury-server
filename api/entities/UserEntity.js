@@ -32,6 +32,12 @@ class UserEntity {
 
   changePassword (oldPassword, newPassword) {
     return new Promise((resolve, reject) => {
+      if (_.isEmpty(oldPassword)) {
+        return reject(new ValidationError('No se ha podido cambiar la contraseña', {
+          oldPassword: 'Contraseña incorrecta'
+        }));
+      }
+      
       if (this.isCorrectPassword(oldPassword)) {
         this.update({password: newPassword})
           .then(resolve)

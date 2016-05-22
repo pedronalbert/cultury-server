@@ -15,7 +15,6 @@
     "rc": "1.0.1",
     "sails": "~0.12.3",
     "sails-disk": "~0.10.9",
-    "sails-hook-requestlogger": "^1.0.0",
     "sails-hook-validation": "^0.4.6",
     "sails-mysql": "^0.12.1"
   },

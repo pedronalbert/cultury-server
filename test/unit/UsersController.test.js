@@ -16,7 +16,7 @@ let generateNewUserData = () => {
 };
 
 
-describe.only('UsersController', () => {
+describe('UsersController', () => {
   let payloadUser;
 
   before(() => {

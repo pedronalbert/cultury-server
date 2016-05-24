@@ -22,7 +22,7 @@
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js",
-    "test": "NODE_ENV=test mocha test/bootstrap.test.js test/unit/**/*.test.js",
+    "test": "NODE_ENV=test mocha test/bootstrap.test.js test/unit/**/*.test.js --reporter nyan",
     "forever": "forever start -w app.js && forever logs -f 0"
   },
   "main": "app.js",

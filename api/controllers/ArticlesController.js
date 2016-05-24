@@ -35,10 +35,16 @@ module.exports = {
     ArticlesRepository
       .findOne({id: articleId})
       .then(articleFound => {
-        return res.json(articleFound);
+        if (_.isUndefined(articleFound)) {
+          throw new EntityNotFoundError('Artículo no encontrado');
+        }
+
+        return res.json({
+          data: articleFound
+        });
       })
       .catch(EntityNotFoundError, err => res.notFound(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   update (req, res) {

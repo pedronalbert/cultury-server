@@ -12,7 +12,7 @@ let generateNewData = () => {
   }
 };
 
-describe.only('ArticlesController', () => {
+describe('ArticlesController', () => {
   let userAgent, adminAgent, articleCreatedId;
 
   before(done => {
@@ -103,6 +103,30 @@ describe.only('ArticlesController', () => {
             articleCreatedId = res.body.data.id;
             done();
           });
+      });
+    });
+  });
+
+  describe('#show', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        request(sails.hooks.http.app)
+          .get('/articles/' + articleCreatedId)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .get('/articles/' + articleCreatedId)
+          .expect(200, done);
+      });
+
+      it('Responder 404 si no existe', done => {
+        userAgent
+          .get('/articles/99')
+          .expect(404, done);
       });
     });
   });

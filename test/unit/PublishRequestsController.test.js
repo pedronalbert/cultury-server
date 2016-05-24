@@ -152,4 +152,31 @@ describe('PublishRequestsController', () => {
       });
     });
   });
+
+  describe('#denyAction', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        request(sails.hooks.http.app)
+          .post('/publish-requests/' + publishRequestCreatedId + '/actions/deny')
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401', done => {
+        userAgent
+          .post('/publish-requests/' + publishRequestCreatedId + '/actions/deny')
+          .expect(401, done);
+      });
+    });
+
+    describe('Admin', () => {
+      it('Responder 200', done => {
+        let publishRequestFixture = fixtures['publishrequest'][1];
+        adminAgent
+          .post('/publish-requests/' + publishRequestFixture.id + '/actions/deny')
+          .expect(200, done);
+      });
+    });
+  });
 });

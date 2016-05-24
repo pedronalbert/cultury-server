@@ -5,6 +5,7 @@
   "description": "Cultury App Server",
   "keywords": [],
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "bcrypt": "^0.8.6",
     "ejs": "^2.4.1",
     "es6-error": "^2.1.1",

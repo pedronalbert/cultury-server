@@ -16,20 +16,17 @@ module.exports = {
   },
 
   create (req, res) {
-    let newArticleData = {
-      title: req.param('title'),
-      content: req.param('content'),
-      imageUrl: req.param('imageUrl'),
-      category: req.param('category')
-    };
+    let createData = req.body;
 
     ArticlesRepository
-      .create(newArticleData)
+      .create(createData)
       .then(articleCreated => {
-        return res.json(articleCreated); 
+        return res.created({
+          data: articleCreated
+        }); 
       })
       .catch(ValidationError, err => res.badRequest(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   show (req, res) {

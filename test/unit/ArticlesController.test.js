@@ -93,14 +93,15 @@ describe('ArticlesController', () => {
     });
 
     describe('Admin', () => {
-      it('Responder 200', done => {
+      it('Responder 201', done => {
         adminAgent
           .post('/articles')
           .send(generateNewData())
-          .expect(200)
+          .expect(201)
           .end((err, res) => {
             if (err) return done(err);
             articleCreatedId = res.body.data.id;
+            done();
           });
       });
     });

@@ -125,4 +125,31 @@ describe('PublishRequestsController', () => {
     });
   });
 
+  describe('#publishAction', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        request(sails.hooks.http.app)
+          .post('/publish-requests/' + publishRequestCreatedId + '/actions/publish')
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401', done => {
+        userAgent
+          .post('/publish-requests/' + publishRequestCreatedId + '/actions/publish')
+          .expect(401, done);
+      });
+    });
+
+    describe('Admin', () => {
+      it('Responder 201', done => {
+        let publishRequestFixture = fixtures['publishrequest'][0];
+        adminAgent
+          .post('/publish-requests/' + publishRequestFixture.id + '/actions/publish')
+          .send(generateNewData())
+          .expect(201, done);
+      });
+    });
+  });
 });

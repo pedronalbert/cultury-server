@@ -13,7 +13,7 @@ let generateNewData = () => {
 };
 
 describe('PublishRequestsController', () => {
-  let userAgent, adminAgent;
+  let userAgent, adminAgent, publishRequestCreatedId;
 
   before(done => {
     let adminFixture = fixtures['user'][0];
@@ -88,8 +88,41 @@ describe('PublishRequestsController', () => {
         userAgent
           .post('/publish-requests')
           .send(generateNewData())
-          .expect(201, done);
+          .expect(201)
+          .end((err, res) => {
+            if (err) return done(err);
+            publishRequestCreatedId = res.body.data.id;
+            done();
+          })
       });
     });
   });
+
+  describe('#update', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        request(sails.hooks.http.app)
+          .put('/publish-requests/1')
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .put('/publish-requests/' + publishRequestCreatedId)
+          .send(generateNewData())
+          .expect(200, done);
+      });
+
+      it('Responder 401 Al no pertenecerle', done => {
+        let publishRequestFixture = fixtures['publishrequest'][0];
+        userAgent
+          .put('/publish-requests/' + publishRequestFixture.id)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+  });
+
 });

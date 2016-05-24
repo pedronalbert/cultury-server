@@ -43,24 +43,25 @@ module.exports = {
 
   update (req, res) {
     let articleId = req.params.articleId;
-    let newArticleData = {
-      title: req.param('title'),
-      content: req.param('content'),
-      imageUrl: req.param('imageUrl'),
-      category: req.param('category')
-    };
+    let updateData = req.body;
 
     ArticlesRepository
       .findOne({id: articleId})
       .then(articleFound => {
-        return articleFound.update(newArticleData);
+        if (_.isUndefined(articleFound)) {
+          throw new EntityNotFoundError('Artículo no encontrado');
+        }
+
+        return articleFound.update(updateData);
       })
       .then(articleUpdated => {
-        return res.json(articleUpdated);
+        return res.json({
+          data: articleUpdated
+        });
       })
       .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   destroy (req, res) {

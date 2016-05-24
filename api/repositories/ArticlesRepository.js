@@ -36,11 +36,16 @@ let ArticlesRepository = {
         .findOne(criteria)
         .then(articleFound => {
           if (_.isUndefined(articleFound)) {
-            return reject(new EntityNotFoundError('Artículo no encontrado'))
+            return resolve(undefined);
           }
 
           return resolve(new ArticleEntity(articleFound));
-        });
+        })
+        .catch(err => {
+          sails.log.error(err);
+
+          return reject(new DatabaseError());
+        })
     });
   },
 

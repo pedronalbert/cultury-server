@@ -70,6 +70,10 @@ module.exports = {
     ArticlesRepository
       .findOne({id: articleId})
       .then(articleFound => {
+        if (_.isUndefined(articleFound)) {
+          throw new EntityNotFoundError('Artículo no encontrado');
+        }
+
         return articleFound.destroy();
       })
       .then(articleDestroyed => {
@@ -77,6 +81,6 @@ module.exports = {
       })
       .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   }
 };

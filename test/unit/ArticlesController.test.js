@@ -12,7 +12,7 @@ let generateNewData = () => {
   }
 };
 
-describe('ArticlesController', () => {
+describe.only('ArticlesController', () => {
   let userAgent, adminAgent, articleCreatedId;
 
   before(done => {
@@ -156,7 +156,7 @@ describe('ArticlesController', () => {
       it('Responder 200', done => {        
         adminAgent
           .delete('/articles/' + articleCreatedId)
-          .expect(401, done);
+          .expect(200, done);
       });
     });
   });

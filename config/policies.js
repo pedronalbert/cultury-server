@@ -32,5 +32,9 @@ module.exports.policies = {
     '*': 'isLoggedIn',
     publishAction: 'isAdmin',
     denyAction: 'isAdmin'
+  },
+
+  ArticlesController: {
+    '*': 'isLoggedIn'
   }
 };

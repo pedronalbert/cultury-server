@@ -9,7 +9,10 @@ module.exports = {
   index (req, res) {
     ArticlesRepository
       .find()
-      .then(articles => res.json(articles));
+      .then(articles => res.json({
+        data: articles
+      }))
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   create (req, res) {

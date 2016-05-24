@@ -11,7 +11,22 @@ let ArticlesRepository = {
     return new Promise((resolve, reject) => {
       Article
         .find(criteria)
-        .then(resolve);
+        .then(articles => {
+          let articlesEntities = [];
+
+          _.each(articles, article => {
+            articlesEntities.push(new ArticleEntity(article));
+          });
+
+          return resolve(articles);
+        })
+        .catch(err => {
+          sails.log.error(err);
+
+          if (err) {
+            return reject(new DatabaseError());
+          }
+        })
     });
   },
 

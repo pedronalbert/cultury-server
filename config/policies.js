@@ -29,7 +29,8 @@ module.exports.policies = {
   // '*': true,
   UsersController: {
     'index': 'isAdmin',
-    'show': 'isLoggedIn'
+    'show': 'isLoggedIn',
+    'update': ['isLoggedIn', 'sameUserOrAdmin']
   },
 
   PublishRequestsController: {

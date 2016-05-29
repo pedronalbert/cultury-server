@@ -56,7 +56,10 @@ module.exports = {
 
   update (req, res) {
     let userId = req.params.id;
-    let updateData = req.body;
+    let updateData = _.pick(
+      req.body,
+      ['firstName', 'lastName', 'email']
+    );
 
     UserRepository
       .findOne({id: userId})

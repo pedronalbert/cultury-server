@@ -80,4 +80,47 @@ describe.only('UsersController', () => {
       });
     });
   });
+
+  describe('#update', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        guestAgent
+          .put('/users/' + userFixtures[1].id)
+          .send(generateNewUserData())
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .put('/users/' + userFixtures[1].id)
+          .send({firstName: faker.name.firstName()})
+          .expect(200, done);
+      });
+
+      it('Responder 401 al intentar editar otro usuario', done => {
+        userAgent
+          .put('/users/' + userFixtures[2].id)
+          .send({firstName: faker.name.firstName()})
+          .expect(401, done);
+      });
+    });
+
+    describe('Admin', () => {
+      it('Responder 200', done => {
+        userAgent
+          .put('/users/' + userFixtures[1].id)
+          .send({firstName: faker.name.firstName()})
+          .expect(200, done);
+      });
+
+      it('Responder 404 al no existir el usuario', done => {
+        adminAgent
+          .put('/users/0')
+          .send(generateNewUserData())
+          .expect(404, done);
+      });
+    });
+  });
 });

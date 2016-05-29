@@ -7,7 +7,6 @@
   "dependencies": {
     "async": "^2.0.0-rc.5",
     "bcrypt": "^0.8.6",
-    "ejs": "^2.4.1",
     "es6-error": "^2.1.1",
     "grunt": "^1.0.1",
     "include-all": "~0.1.6",
@@ -36,7 +35,7 @@
     "barrels": "^1.6.4",
     "chai": "^3.5.0",
     "faker": "^3.1.0",
-    "sails-hook-autoreload": "^0.13.1",
+    "sails-fixtures": "^1.0.8",
     "supertest": "^1.2.0"
   }
 }

@@ -123,4 +123,73 @@ describe.only('UsersController', () => {
       });
     });
   });
+
+  describe('#changePassword', () => {
+    describe('Guest', () => {
+      it('Responder 401 al no estar logeado', done => {
+        guestAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: userFixtures[1].password, newPassword: faker.internet.password()})
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      let newPassword = "1234567";
+
+      it('Responder 200', done => {
+        userAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: userFixtures[1].password, newPassword: newPassword})
+          .expect(200, done);
+      });
+
+      it('Responder 400 con contraseña incorrecta', done => {
+        userAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: faker.internet.password(), newPassword: faker.internet.password()})
+          .expect(400, done);
+      });
+
+      it('Responder 401 al intentar cambiar la de otro usuario', done => {
+        userAgent
+          .put('/users/' + userFixtures[0].id + '/actions/change-password')
+          .send({oldPassword: userFixtures[0].password, newPassword: faker.internet.password()})
+          .expect(401, done);
+      });
+
+      //Volver a la contraseña original
+      after(done => {
+        userAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: newPassword, newPassword: userFixtures[1].password})
+          .expect(200, done);
+      })
+    });
+
+    describe('Admin', () => {
+      let newPassword = "1234567";
+
+      it('Responder 200', done => {
+        adminAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: userFixtures[1].password, newPassword: newPassword})
+          .expect(200, done);
+      });
+
+      it('Responder 404 si no existe el usuario', done => {
+        adminAgent
+          .put('/users/0/actions/change-password')
+          .expect(404, done);
+      });
+
+      //Volver a la contraseña original
+      after(done => {
+        adminAgent
+          .put('/users/' + userFixtures[1].id + '/actions/change-password')
+          .send({oldPassword: newPassword, newPassword: userFixtures[1].password})
+          .expect(200, done);
+      })
+    });
+  });
 });

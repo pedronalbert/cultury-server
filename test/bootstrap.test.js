@@ -7,7 +7,7 @@ let request = require('supertest');
 before(function(done) {
 
   // Increase the Mocha timeout so that Sails has enough time to lift.
-  this.timeout(10000);
+  this.timeout(25000);
 
   sails.lift({
     // configuration for testing purposes

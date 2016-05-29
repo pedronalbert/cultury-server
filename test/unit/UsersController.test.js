@@ -56,4 +56,28 @@ describe.only('UsersController', () => {
         .expect(400, done);
     });
   });
+
+  describe('#show', () => {
+    describe('Guest', () => {
+      it('Responder 401', done => {
+        guestAgent
+          .get('/users/' + userFixtures[0].id)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .get('/users/' + userFixtures[0].id)
+          .expect(200, done);
+      });
+
+      it('Responder 404', done => {
+        userAgent
+          .get('/users/0')
+          .expect(404,done);
+      });
+    });
+  });
 });

@@ -28,7 +28,8 @@ module.exports.policies = {
 
   // '*': true,
   UsersController: {
-    'index': 'isAdmin'
+    'index': 'isAdmin',
+    'show': 'isLoggedIn'
   },
 
   PublishRequestsController: {

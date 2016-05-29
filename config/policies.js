@@ -27,6 +27,9 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+  UsersController: {
+    'index': 'isAdmin'
+  },
 
   PublishRequestsController: {
     '*': 'isLoggedIn',

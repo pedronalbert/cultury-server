@@ -32,10 +32,28 @@ describe.only('UsersController', () => {
 
     describe('Admin', () => {
       it('Responder 200', done => {
-        guestAgent
+        adminAgent
           .get('/users')
           .expect(200, done);
       });
+    });
+  });
+
+  describe('#create', () => {
+    let userToCreate = generateNewUserData();
+
+    it('Responder 201', done => {
+      guestAgent
+        .post('/users')
+        .send(userToCreate)
+        .expect(201, done);
+    });
+
+    it('Responder 400 al ser duplicado', done => {
+      guestAgent
+        .post('/users')
+        .send(userToCreate)
+        .expect(400, done);
     });
   });
 });

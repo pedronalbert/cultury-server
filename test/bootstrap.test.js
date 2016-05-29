@@ -2,6 +2,7 @@
 
 let sails = require('sails');
 let Barrels = require('barrels');
+let request = require('supertest');
 
 before(function(done) {
 
@@ -16,15 +17,15 @@ before(function(done) {
     }
   }, function(err, server) {
     if (err) return done(err);
-     // Load fixtures
-    var barrels = new Barrels();
-
-    // Save original objects in `fixtures` variable
+    let barrels = new Barrels();
     global.fixtures = barrels.data;
 
     // Populate the DB
-    barrels.populate(['user', 'publishrequest'], function(err) {
-      done(err, sails);
+    barrels.populate(['user'], function(err) {
+      if (err) return done(err);
+      loadAgents(err => {
+        done(err, sails);
+      });
     });
   });
 });
@@ -33,3 +34,39 @@ after(function(done) {
   // here you can clear fixtures, etc.
   sails.lower(done);
 });
+
+function loadAgents (cb) {
+  let adminFixture = fixtures['user'][0];
+  let userFixture = fixtures['user'][1];
+
+  global.guestAgent = request.agent(sails.hooks.http.app);
+  global.userAgent = request.agent(sails.hooks.http.app);
+  global.adminAgent = request.agent(sails.hooks.http.app);
+
+  //Login Agents
+  async.parallel([
+    next => {
+      userAgent
+        .post('/login')
+        .send({
+          email: userFixture.email,
+          password: userFixture.password
+        })
+        .expect(200)
+        .end(next);
+    },
+
+    next => {
+      adminAgent
+        .post('/login')
+        .send({
+          email: adminFixture.email,
+          password: adminFixture.password
+        })
+        .expect(200)
+        .end(next); 
+    }
+  ], (err, results) => {
+    cb(err);
+  });
+}

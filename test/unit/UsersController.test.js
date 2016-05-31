@@ -101,7 +101,7 @@ describe.only('UsersController', () => {
 
       it('Responder 401 al intentar editar otro usuario', done => {
         userAgent
-          .put('/users/' + userFixtures[2].id)
+          .put('/users/' + userFixtures[0].id)
           .send({firstName: faker.name.firstName()})
           .expect(401, done);
       });

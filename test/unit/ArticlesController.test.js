@@ -75,7 +75,8 @@ describe.only('ArticlesController', () => {
     describe('Mod', () => {
       it('Responder 201', done => {
         modAgent
-          .post(generateNewData())
+          .post(baseUrl)
+          .send(generateNewData())
           .expect(201, done);
       });
     });

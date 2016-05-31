@@ -42,8 +42,8 @@ module.exports.policies = {
 
   ArticlesController: {
     '*': 'isLoggedIn',
-    create: 'isAdmin',
-    update: 'isAdmin',
-    destroy: 'isAdmin'
+    create: 'isAdminOrMod',
+    update: 'isAdminOrMod',
+    destroy: 'isAdminOrMod'
   }
 };

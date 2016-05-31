@@ -12,176 +12,30 @@ let generateNewData = () => {
   }
 };
 
-describe('ArticlesController', () => {
-  let userAgent, adminAgent, articleCreatedId;
+describe.only('ArticlesController', () => {
+  let articlesFixtures;
+  let baseUrl = '/articles';
 
-  before(done => {
-    let adminFixture = fixtures['user'][0];
-    let userFixture = fixtures['user'][1];
-
-    userAgent = request.agent(sails.hooks.http.app);
-    adminAgent = request.agent(sails.hooks.http.app);
-
-    //Login Agents
-    async.parallel([
-      next => {
-        userAgent
-          .post('/login')
-          .send({
-            email: userFixture.email,
-            password: userFixture.password
-          })
-          .expect(200)
-          .end((err, res) => {
-            if (err) return done(err);
-            next(null, res.body);
-          });
-      },
-
-      next => {
-        adminAgent
-          .post('/login')
-          .send({
-            email: adminFixture.email,
-            password: adminFixture.password
-          })
-          .expect(200)
-          .end((err, res) => {
-            if (err) return done(err);
-            next(null, res.body);
-          }); 
-      }
-    ], (err, results) => {
-      done();
-    });
+  before(() => {
+    articlesFixtures = fixtures['article'];
   });
 
   describe('#index', () => {
-    describe('Guest', () => {
-      it('Responder 401', done => {
-        request(sails.hooks.http.app)
-          .get('/articles')
-          .expect(401, done)
-      });
-    })
-
-    describe('User', done => {
-      it('Responder 200', done => {
-        userAgent
-          .get('/articles')
-          .expect(200, done)
-      })
-    });
-  });
-
-  describe('#create', () => {
-    describe('Guest', () => {
-      it('Responder 401', done => {
-        request(sails.hooks.http.app)
-          .post('/articles')
-          .expect(401, done);
-      });
-    });
-
-    describe('User', () => {
-      it('Responder 401', done => {
-        userAgent
-          .post('/articles')
-          .send(generateNewData())
-          .expect(401, done);
-      });
-    });
-
-    describe('Admin', () => {
-      it('Responder 201', done => {
-        adminAgent
-          .post('/articles')
-          .send(generateNewData())
-          .expect(201)
-          .end((err, res) => {
-            if (err) return done(err);
-            articleCreatedId = res.body.data.id;
-            done();
-          });
-      });
-    });
-  });
-
-  describe('#show', () => {
-    describe('Guest', () => {
-      it('Responder 401', done => {
-        request(sails.hooks.http.app)
-          .get('/articles/' + articleCreatedId)
-          .expect(401, done);
-      });
-    });
-
     describe('User', () => {
       it('Responder 200', done => {
         userAgent
-          .get('/articles/' + articleCreatedId)
+          .get(baseUrl)
           .expect(200, done);
       });
-
-      it('Responder 404 si no existe', done => {
-        userAgent
-          .get('/articles/99')
-          .expect(404, done);
-      });
     });
-  });
 
-  describe('#update', () => {
     describe('Guest', () => {
-      it('Responder 401', done => {
-        request(sails.hooks.http.app)
-          .put('/articles/' + articleCreatedId)
+      it('Responder 401 si no está logeado', done => {
+        guestAgent
+          .get(baseUrl)
           .expect(401, done);
-      });
-    });
-
-    describe('User', () => {
-      it('Responder 401', done => {
-        userAgent
-          .put('/articles/' + articleCreatedId)
-          .send(generateNewData())
-          .expect(401, done);
-      });
-    });
-
-    describe('Admin', () => {
-      it('Responder 200', done => {
-        adminAgent
-          .put('/articles/' + articleCreatedId)
-          .send(generateNewData())
-          .expect(200, done);
       });
     });
   });
 
-  describe('#destroy', () => {
-    describe('Guest', () => {
-      it('Responder 401', done => {
-        request(sails.hooks.http.app)
-          .delete('/articles/' + articleCreatedId)
-          .expect(401, done);
-      });
-    });
-
-    describe('User', () => {
-      it('Responder 401', done => {
-        userAgent
-          .delete('/articles/' + articleCreatedId)
-          .expect(401, done);
-      });
-    });
-
-    describe('Admin', () => {
-      it('Responder 200', done => {        
-        adminAgent
-          .delete('/articles/' + articleCreatedId)
-          .expect(200, done);
-      });
-    });
-  });
 });

@@ -14,7 +14,7 @@ let generateNewUserData = () => {
   };
 };
 
-describe.only('UsersController', () => {
+describe('UsersController', () => {
   let userFixtures;
 
   before(() => {

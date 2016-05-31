@@ -17,10 +17,10 @@ module.exports = [
   },
   {
     "id": 3,
-    "firstName": "userTest",
-    "lastName": "userTest",
-    "email": "user2@gmail.com",
+    "firstName": "mod",
+    "lastName": "mod",
+    "email": "mod@gmail.com",
     "password": "123456",
-    "role": "user"
+    "role": "mod"
   }
 ]

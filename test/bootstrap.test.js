@@ -38,10 +38,12 @@ after(function(done) {
 function loadAgents (cb) {
   let adminFixture = fixtures['user'][0];
   let userFixture = fixtures['user'][1];
+  let modFixture = fixtures['user'][2];
 
   global.guestAgent = request.agent(sails.hooks.http.app);
   global.userAgent = request.agent(sails.hooks.http.app);
   global.adminAgent = request.agent(sails.hooks.http.app);
+  global.modAgent = request.agent(sails.hooks.http.app);
 
   //Login Agents
   async.parallel([
@@ -64,7 +66,18 @@ function loadAgents (cb) {
           password: adminFixture.password
         })
         .expect(200)
-        .end(next); 
+        .end(next);
+    },
+
+    next => {
+      modAgent
+        .post('/login')
+        .send({
+          email: modFixture.email,
+          password: modFixture.password
+        })
+        .expect(200)
+        .end(next);
     }
   ], (err, results) => {
     cb(err);

@@ -38,4 +38,46 @@ describe.only('ArticlesController', () => {
     });
   });
 
+  describe('#create', () => {
+    describe('Admin', () => {
+      it('Responder 201', done => {
+        adminAgent
+          .post(baseUrl)
+          .send(generateNewData())
+          .expect(201, done);
+      });
+
+      it('Responder 400 con bad inputs', done => {
+        adminAgent
+          .post(baseUrl)
+          .expect(400, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401 al ser usuario común', done => {
+        userAgent
+          .post(baseUrl)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+
+    describe('Guest', () => {
+      it('Responder 401 al no estár logeado', done => {
+        guestAgent
+          .post(baseUrl)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+
+    describe('Mod', () => {
+      it('Responder 201', done => {
+        modAgent
+          .post(generateNewData())
+          .expect(201, done);
+      });
+    });
+  });
 });

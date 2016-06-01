@@ -160,7 +160,7 @@ describe.only('PublishRequestsController', () => {
       });
 
       it('Responder 404 si no existe', done => {
-        userAgent
+        modAgent
           .post(baseUrl + '/0/actions/publish')
           .send(generateNewData())
           .expect(404, done);

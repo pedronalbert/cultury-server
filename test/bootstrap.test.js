@@ -21,7 +21,7 @@ before(function(done) {
     global.fixtures = barrels.data;
 
     // Populate the DB
-    barrels.populate(['user', 'article', 'publishrequest'], function(err) {
+    barrels.populate(['user', 'article', 'publishrequest', 'editrequest'], function(err) {
       if (err) return done(err);
       loadAgents(err => {
         done(err, sails);

@@ -2,6 +2,7 @@
 let EditRequestRepository = require('../repositories/EditRequestRepository');
 let DatabaseError = require('../errors/DatabaseError');
 let ValidationError = require('../errors/ValidationError');
+let EntityNotFoundError = require('../errors/EntityNotFoundError');
 
 module.exports = {
   index (req, res) {
@@ -26,6 +27,25 @@ module.exports = {
           data: editRequestCreated
         })
       })
+      .catch(ValidationError, err => res.badRequest(err))
+      .catch(DatabaseError, err => res.serverError(err));
+  },
+
+  show (req, res) {
+    let editRequestId = req.params.editRequestId;
+
+    EditRequestRepository
+      .find({id: editRequestId})
+      .then(editRequestFound => {
+        if (_.isEmpty(editRequestFound)) {
+          throw new EntityNotFoundError('Peticion no encontrada');
+        }
+
+        return res.json({
+          data: editRequestFound
+        });
+      })
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));
   }

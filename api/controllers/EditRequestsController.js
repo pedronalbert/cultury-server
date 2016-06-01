@@ -1,6 +1,7 @@
 'use strict';
 let EditRequestRepository = require('../repositories/EditRequestRepository');
 let DatabaseError = require('../errors/DatabaseError');
+let ValidationError = require('../errors/ValidationError');
 
 module.exports = {
   index (req, res) {
@@ -11,6 +12,21 @@ module.exports = {
           data: editRequests
         })
       })
+      .catch(DatabaseError, err => res.serverError(err));
+  },
+
+  create (req, res) {
+    let data = _.pick(req.body, ['title', 'content', 'imageUrl', 'category', 'article']);
+    data.user = req.user.id;
+
+    EditRequestRepository
+      .create(data)
+      .then(editRequestCreated => {
+        return res.created({
+          data: editRequestCreated
+        })
+      })
+      .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));
   }
 }

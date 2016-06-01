@@ -81,4 +81,28 @@ describe.only('ArticlesController', () => {
       });
     });
   });
+
+  describe('#show', () => {
+    describe('Guest', () => {
+      it('Responder 401 al no estár logeado', done => {
+        guestAgent
+          .get(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .get(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(200, done);
+      });
+
+      it('Responder 404', done => {
+        userAgent
+          .get(baseUrl + '/0')
+          .expect(404, done);
+      });
+    });
+  });
 });

@@ -18,6 +18,5 @@ module.exports = function(req, res, next) {
     }
   }
 
-
   return res.unauthorized({title: 'No tiene los permisos necesarios'});
 };

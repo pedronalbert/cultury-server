@@ -78,7 +78,7 @@ module.exports = {
       .findOne({id: publishRequestId})
       .then(publishRequestFound => {
         if (_.isUndefined(publishRequestFound)) {
-          return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
+          throw new EntityNotFoundError('Peticion no encontrada');
         }
 
         return publishRequestFound.publish();
@@ -86,6 +86,7 @@ module.exports = {
       .then(articlePublished => {
         return res.created(articlePublished);
       })
+      .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));
   },

@@ -130,6 +130,15 @@ describe('PublishRequestsController', () => {
           .expect(404, done);
       });
     });
+
+    describe('Mod', () => {
+      it('Responder 200', done => {
+        modAgent
+          .put(baseUrl + '/' + publishRequestsFixtures[1].id)
+          .send(generateNewData())
+          .expect(200, done);
+      });
+    });
   });
 
   describe('#publishAction', () => {

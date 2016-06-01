@@ -8,16 +8,17 @@ let generateNewData = () => {
     title: faker.lorem.text(),
     content: faker.lorem.text(),
     imageUrl: faker.image.imageUrl(),
-    category: faker.lorem.word()
+    category: faker.lorem.word(),
+    article: 1
   }
 };
 
-describe('PublishRequestsController', () => {
-  let publishRequestsFixtures;
-  let baseUrl = '/publish-requests';
+describe.only('EditRequestController', () => {
+  let editRequestFixtures;
+  let baseUrl = '/edit-requests';
 
   before(() => {
-    publishRequestsFixtures = fixtures['publishrequest'];
+    editRequestFixtures = fixtures['editrequest'];
   });
 
   describe('#index', () => {
@@ -67,7 +68,7 @@ describe('PublishRequestsController', () => {
       it('Responder 400 con bad inputs', done => {
         userAgent
           .post(baseUrl)
-          .send({title: '', content: ''})
+          .send({title: ''})
           .expect(400, done);
       });
     });
@@ -77,7 +78,7 @@ describe('PublishRequestsController', () => {
     describe('Guest', () => {
       it('Responder 401 si no está logeado', done => {
         guestAgent
-          .get(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .get(baseUrl + '/' + editRequestFixtures[0].id)
           .expect(401, done);
       });
     });
@@ -85,7 +86,7 @@ describe('PublishRequestsController', () => {
     describe('User', () => {
       it('Responder 200', done => {
         userAgent
-        .get(baseUrl + '/' + publishRequestsFixtures[0].id)
+        .get(baseUrl + '/' + editRequestFixtures[0].id)
         .expect(200, done);
       });
     });
@@ -95,7 +96,7 @@ describe('PublishRequestsController', () => {
     describe('Guest', () => {
       it('Responder 401 al no estár logeado', done => {
         guestAgent
-          .put(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .put(baseUrl + '/' + editRequestFixtures[0].id)
           .send(generateNewData())
           .expect(401, done);
       });
@@ -104,21 +105,21 @@ describe('PublishRequestsController', () => {
     describe('User', () => {
       it('Responder 200', done => {
         userAgent
-          .put(baseUrl + '/' + publishRequestsFixtures[1].id)
+          .put(baseUrl + '/' + editRequestFixtures[1].id)
           .send(generateNewData())
           .expect(200, done);
       });
 
       it('Responder 400 con bad inputs', done => {
         userAgent
-          .put(baseUrl + '/' + publishRequestsFixtures[1].id)
+          .put(baseUrl + '/' + editRequestFixtures[1].id)
           .send({title: ''})
           .expect(400, done);
       });
 
       it('Responder 401 al editar el de otro usuario', done => {
         userAgent
-          .put(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .put(baseUrl + '/' + editRequestFixtures[0].id)
           .send(generateNewData())
           .expect(401, done);
       });
@@ -136,7 +137,7 @@ describe('PublishRequestsController', () => {
     describe('Guest', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
           .send(generateNewData())
           .expect(401, done);
       });
@@ -145,18 +146,18 @@ describe('PublishRequestsController', () => {
     describe('User', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
           .send(generateNewData())
           .expect(401, done);
       });
     });
 
     describe('Mod', () => {
-      it('Responder 201', done => {
+      it('Responder 200', done => {
         modAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
           .send(generateNewData())
-          .expect(201, done);
+          .expect(200, done);
       });
 
       it('Responder 404 si no existe', done => {
@@ -172,7 +173,7 @@ describe('PublishRequestsController', () => {
     describe('Guest', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
           .send(generateNewData())
           .expect(401, done);
       });
@@ -181,7 +182,7 @@ describe('PublishRequestsController', () => {
     describe('User', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
           .send(generateNewData())
           .expect(401, done);
       });
@@ -190,7 +191,7 @@ describe('PublishRequestsController', () => {
     describe('Mod', () => {
       it('Responder 200', done => {
         modAgent
-          .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
           .send(generateNewData())
           .expect(200, done);
       });

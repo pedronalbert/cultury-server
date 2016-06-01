@@ -11,7 +11,7 @@ module.exports = [
     user: 1
   },
   {
-    id: 1,
+    id: 2,
     title: faker.lorem.text(),
     content: faker.lorem.text(),
     imageUrl: faker.image.imageUrl(),

@@ -6,8 +6,7 @@ module.exports = {
   attributes: {
     title: {
       type: 'string',
-      required: true,
-      unique: true
+      required: true
     },
 
     content: {
@@ -33,8 +32,7 @@ module.exports = {
 
   validationMessages: {
     title: {
-      required: 'El título es obligatorio',
-      unique: 'Ya existe una petición con este título'
+      required: 'El título es obligatorio'
     },
 
     content: {

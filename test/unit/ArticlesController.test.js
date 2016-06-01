@@ -12,7 +12,7 @@ let generateNewData = () => {
   }
 };
 
-describe.only('ArticlesController', () => {
+describe('ArticlesController', () => {
   let articlesFixtures;
   let baseUrl = '/articles';
 

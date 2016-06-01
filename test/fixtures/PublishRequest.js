@@ -17,13 +17,5 @@ module.exports = [
     imageUrl: faker.image.imageUrl(),
     category: faker.lorem.word(),
     user: 1
-  },
-  {
-    id: 3,
-    title: faker.lorem.text(),
-    content: faker.lorem.text(),
-    imageUrl: faker.image.imageUrl(),
-    category: faker.lorem.word(),
-    user: 1
-  },
+  }
 ];

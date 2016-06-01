@@ -138,7 +138,6 @@ describe('EditRequestController', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
           .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -147,7 +146,6 @@ describe('EditRequestController', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
           .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -156,14 +154,12 @@ describe('EditRequestController', () => {
       it('Responder 200', done => {
         modAgent
           .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(200, done);
       });
 
       it('Responder 404 si no existe', done => {
         modAgent
           .post(baseUrl + '/0/actions/publish')
-          .send(generateNewData())
           .expect(404, done);
       });
     });
@@ -174,7 +170,6 @@ describe('EditRequestController', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
           .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -183,7 +178,6 @@ describe('EditRequestController', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
           .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -192,14 +186,12 @@ describe('EditRequestController', () => {
       it('Responder 200', done => {
         modAgent
           .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(200, done);
       });
 
       it('Responder 404 si no existe', done => {
         modAgent
           .post(baseUrl + '/0/actions/deny')
-          .send(generateNewData())
           .expect(404, done);
       });
     });

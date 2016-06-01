@@ -41,7 +41,11 @@ class EditRequestEntity {
 
           return articleFound.update(createData);
         })
-        .then(resolve)
+        .then(articleUpdated => {
+          resolve(articleUpdated);
+
+          return this.destroy();
+        })
         .catch(reject)
     });
   }

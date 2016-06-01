@@ -163,6 +163,11 @@ describe('EditRequestController', () => {
           .expect(404, done);
       });
     });
+
+    //restore editrequest
+    after(done => {
+      EditRequest.create(editRequestFixtures[0]).exec(done);
+    })
   });
 
   describe.skip('#denyAction', () => {

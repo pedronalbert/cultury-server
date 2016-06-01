@@ -99,5 +99,22 @@ module.exports = {
       .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));
+  },
+
+  denyAction (req, res) {
+    let editRequestId = req.params.editRequestId;
+
+    EditRequestRepository
+      .findOne({id: editRequestId})
+      .then(editRequestFound => {
+        if (_.isUndefined(editRequestFound)) {
+          throw new EntityNotFoundError('Peticion no encontrada');
+        }
+
+        editRequestFound.destroy();
+        return res.json({title: 'Peticion eliminada'});
+      })
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(DatabaseError, err => res.serverError(err));
   }
 }

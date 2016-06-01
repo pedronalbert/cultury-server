@@ -170,11 +170,11 @@ describe('EditRequestController', () => {
     })
   });
 
-  describe.skip('#denyAction', () => {
+  describe('#denyAction', () => {
     describe('Guest', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
-          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/deny')
           .expect(401, done);
       });
     });
@@ -182,7 +182,7 @@ describe('EditRequestController', () => {
     describe('User', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
-          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/deny')
           .expect(401, done);
       });
     });
@@ -190,7 +190,7 @@ describe('EditRequestController', () => {
     describe('Mod', () => {
       it('Responder 200', done => {
         modAgent
-          .post(baseUrl + '/' + editRequestFixtures[1].id + '/actions/deny')
+          .post(baseUrl + '/' + editRequestFixtures[0].id + '/actions/deny')
           .expect(200, done);
       });
 
@@ -200,5 +200,10 @@ describe('EditRequestController', () => {
           .expect(404, done);
       });
     });
+
+    //restore editrequest
+    after(done => {
+      EditRequest.create(editRequestFixtures[0]).exec(done);
+    })
   });
 });

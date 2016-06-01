@@ -17,13 +17,14 @@ module.exports = {
 
   create (req, res) {
     let createData = req.body;
+    createData.user = req.user.id;
 
     ArticlesRepository
       .create(createData)
       .then(articleCreated => {
         return res.created({
           data: articleCreated
-        }); 
+        });
       })
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));

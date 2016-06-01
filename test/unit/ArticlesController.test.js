@@ -105,4 +105,48 @@ describe.only('ArticlesController', () => {
       });
     });
   });
+
+  describe('#update', () => {
+    describe('Guest', () => {
+      it('Responder 401 al no estár logeado', done => {
+        guestAgent
+          .put(baseUrl + '/' + articlesFixtures[0].id)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401 al no tener permiso', done => {
+        userAgent
+          .put(baseUrl + '/' + articlesFixtures[0].id)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+
+    describe('Mod', () => {
+      it('Responder 200', done => {
+        modAgent
+          .put(baseUrl + '/' + articlesFixtures[0].id)
+          .send(generateNewData())
+          .expect(200, done);
+      });
+
+      it('Responder 404', done => {
+        modAgent
+          .put(baseUrl + '/0')
+          .send(generateNewData())
+          .expect(404, done);
+      });
+
+      it('Responder 400 con bad inputs', done => {
+        modAgent
+          .put(baseUrl + '/' + articlesFixtures[0].id)
+          .send({title: '', content: ''})
+          .expect(400, done);
+      });
+    });
+  });
+
 });

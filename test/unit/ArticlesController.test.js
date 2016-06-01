@@ -149,4 +149,35 @@ describe.only('ArticlesController', () => {
     });
   });
 
+  describe('#destroy', () => {
+    describe('Guest', () => {
+      it('Responder 401 al no estár logeado', done => {
+        guestAgent
+          .delete(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401 al no tener permiso', done => {
+        userAgent
+          .delete(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(401, done);
+      });
+    });
+
+    describe('Mod', () => {
+      it('Responder 200', done => {
+        modAgent
+          .delete(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(200, done);
+      });
+
+      it('Responder 404', done => {
+        modAgent
+          .delete(baseUrl + '/' + articlesFixtures[0].id)
+          .expect(404, done);
+      });
+    });
+  });
 });

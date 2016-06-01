@@ -2,7 +2,7 @@
 let Promise = require('bluebird');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
-let ArticleEntity = require('../entities/ArticleEntity');
+let ArticlesRepository = require('../repositories/ArticlesRepository');
 
 class PublishRequestEntity {
   constructor (model) {
@@ -22,32 +22,18 @@ class PublishRequestEntity {
     });
   }
 
-  publish (articleData) {
-    let articleCreated;
+  publish () {
+    let createData = {
+      title: this.title,
+      content: this.content,
+      imageUrl: this.imageUrl,
+      category: this.category,
+      user: this.user
+    };
 
-    return new Promise((resolve, reject) => {
-
-      Article
-        .create(articleData)
-        .then(article => {
-          articleCreated = article;
-          return this.destroy();
-        })
-        .then(() => {
-          return resolve(new ArticleEntity(articleCreated));
-        })
-        .catch(err => {
-          if (err.code == 'E_VALIDATION') {
-            return reject(new ValidationError('Artículo no ha podido ser publicado', err.Errors));
-          }
-
-          sails.log.error(err);
-          return reject(new DatabaseError());
-        })
-        .catch(ValidationError, DatabaseError, err => reject(err));
-    });
+    return ArticlesRepository.create(createData);
   }
-  
+
   update (updateData) {
     return new Promise((resolve, reject) => {
 

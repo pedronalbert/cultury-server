@@ -137,7 +137,6 @@ describe('PublishRequestsController', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
           .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -146,7 +145,6 @@ describe('PublishRequestsController', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
           .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -155,14 +153,12 @@ describe('PublishRequestsController', () => {
       it('Responder 201', done => {
         modAgent
           .post(baseUrl + '/' + publishRequestsFixtures[0].id + '/actions/publish')
-          .send(generateNewData())
           .expect(201, done);
       });
 
       it('Responder 404 si no existe', done => {
         modAgent
           .post(baseUrl + '/0/actions/publish')
-          .send(generateNewData())
           .expect(404, done);
       });
     });
@@ -173,7 +169,6 @@ describe('PublishRequestsController', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent
           .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -182,7 +177,6 @@ describe('PublishRequestsController', () => {
       it('Responder 401 al no tener permisos', done => {
         userAgent
           .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(401, done);
       });
     });
@@ -191,14 +185,12 @@ describe('PublishRequestsController', () => {
       it('Responder 200', done => {
         modAgent
           .post(baseUrl + '/' + publishRequestsFixtures[1].id + '/actions/deny')
-          .send(generateNewData())
           .expect(200, done);
       });
 
       it('Responder 404 si no existe', done => {
         modAgent
           .post(baseUrl + '/0/actions/deny')
-          .send(generateNewData())
           .expect(404, done);
       });
     });

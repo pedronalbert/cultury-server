@@ -40,7 +40,7 @@ module.exports = {
         }
         return res.json(publishRequestFound);
       })
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   update (req, res) {
@@ -66,12 +66,11 @@ module.exports = {
       .catch(EntityNotFoundError, err => res.notFound(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(AuthError, err => res.unauthorized(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   publishAction (req, res) {
     let publishRequestId = req.params.publishRequestId;
-    let articleData = req.body;
 
     PublishRequestRepository
       .findOne({id: publishRequestId})
@@ -80,13 +79,13 @@ module.exports = {
           return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
         }
 
-        return publishRequestFound.publish(articleData);
+        return publishRequestFound.publish();
       })
       .then(articlePublished => {
         return res.created(articlePublished);
       })
       .catch(ValidationError, err => res.badRequest(err))
-      .catch(DatabaseError, err => res.serverError(err.message));
+      .catch(DatabaseError, err => res.serverError(err));
   },
 
   /**
@@ -102,13 +101,13 @@ module.exports = {
         if (_.isUndefined(publishRequestFound)) {
           throw new EntityNotFoundError('Peticion no encontrada');
         }
-        
+
         return publishRequestFound.destroy();
       })
       .then(PublishRequest => {
         return res.json({message: 'Articulo Negado'});
       })
-      .catch(DatabaseError, err => res.serverError(err.message))
+      .catch(DatabaseError, err => res.serverError(err))
       .catch(EntityNotFoundError, err => res.notFound(err));
   }
 };

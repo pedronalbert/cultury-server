@@ -41,6 +41,13 @@ module.exports.policies = {
     denyAction: 'isAdminOrMod'
   },
 
+  EditRequestsController: {
+    '*': 'isLoggedIn',
+    index: 'isAdminOrMod',
+    publishAction: 'isAdminOrMod',
+    denyAction: 'isAdminOrMod'
+  },
+
   ArticlesController: {
     '*': 'isLoggedIn',
     create: 'isAdminOrMod',

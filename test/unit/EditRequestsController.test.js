@@ -13,7 +13,7 @@ let generateNewData = () => {
   }
 };
 
-describe.only('EditRequestController', () => {
+describe('EditRequestController', () => {
   let editRequestFixtures;
   let baseUrl = '/edit-requests';
 

@@ -46,11 +46,12 @@ module.exports.routes = {
   'post /publish-requests/:publishRequestId/actions/deny': 'PublishRequestsController.denyAction',
 
   //ArticlesEditRequests
-  'get /articles-edit-requests': 'ArticlesEditRequestsController.index',
-  'post /articles-edit-requests': 'ArticlesEditRequestsController.create',
-  'post /articles-edit-requests/:editRequestId': 'ArticlesEditRequestsController.update',
-  'post /articles-edit-requests/:editRequestId/actions/publish': 'ArticlesEditRequestsController.publishAction',
-  'post /articles-edit-requests/:editRequestId/actions/deny': 'ArticlesEditRequestsController.denyAction',
+  'get /edit-requests': 'EditRequestsController.index',
+  'post /edit-requests': 'EditRequestsController.create',
+  'get /edit-requests/:editRequestId': 'EditRequestsController.show',
+  'post /edit-requests/:editRequestId': 'EditRequestsController.update',
+  'post /edit-requests/:editRequestId/actions/publish': 'EditRequestsController.publishAction',
+  'post /edit-requests/:editRequestId/actions/deny': 'EditRequestsController.denyAction',
   //UsersController
   'get /users': 'UsersController.index',
   'get /users/:id': 'UsersController.show',

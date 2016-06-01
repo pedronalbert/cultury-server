@@ -16,6 +16,6 @@ module.exports = [
     content: faker.lorem.text(),
     imageUrl: faker.image.imageUrl(),
     category: faker.lorem.word(),
-    user: 1
+    user: 2
   }
 ];

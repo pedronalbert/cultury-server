@@ -90,4 +90,45 @@ describe.only('PublishRequestsController', () => {
       });
     });
   });
+
+  describe('#update', () => {
+    describe('Guest', () => {
+      it('Responder 401 al no estár logeado', done => {
+        guestAgent
+          .put(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+          .put(baseUrl + '/' + publishRequestsFixtures[1].id)
+          .send(generateNewData())
+          .expect(200, done);
+      });
+
+      it('Responder 400 con bad inputs', done => {
+        userAgent
+          .put(baseUrl + '/' + publishRequestsFixtures[1].id)
+          .send({title: ''})
+          .expect(400, done);
+      });
+
+      it('Responder 401 al editar el de otro usuario', done => {
+        userAgent
+          .put(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .send(generateNewData())
+          .expect(401, done);
+      });
+
+      it('Responder 404 si no existe', done => {
+        userAgent
+          .put(baseUrl + '/0')
+          .send(generateNewData())
+          .expect(404, done);
+      });
+    });
+  });
 });

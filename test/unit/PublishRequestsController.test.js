@@ -12,8 +12,37 @@ let generateNewData = () => {
   }
 };
 
-describe('PublishRequestsController', () => {
+describe.only('PublishRequestsController', () => {
+  let publishRequestsFixtures;
+  let baseUrl = '/publish-requests';
+
   before(() => {
     publishRequestsFixtures = fixtures['publishrequest'];
+  });
+
+  describe('#index', () => {
+    describe('Guest', () => {
+      it('Responder 401 si no está logeado', done => {
+        guestAgent
+          .get(baseUrl)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 401 si no tiene permisos', done => {
+        userAgent
+          .get(baseUrl)
+          .expect(401, done);
+      });
+    });
+
+    describe('Mod', () => {
+      it('Responder 200', done => {
+        modAgent
+          .get(baseUrl)
+          .expect(200, done);
+      });
+    });
   });
 });

@@ -72,4 +72,22 @@ describe.only('PublishRequestsController', () => {
       });
     });
   });
+
+  describe('#show', () => {
+    describe('Guest', () => {
+      it('Responder 401 si no está logeado', done => {
+        guestAgent
+          .get(baseUrl + '/' + publishRequestsFixtures[0].id)
+          .expect(401, done);
+      });
+    });
+
+    describe('User', () => {
+      it('Responder 200', done => {
+        userAgent
+        .get(baseUrl + '/' + publishRequestsFixtures[0].id)
+        .expect(200, done);
+      });
+    });
+  });
 });

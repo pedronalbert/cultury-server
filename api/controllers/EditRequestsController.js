@@ -77,5 +77,27 @@ module.exports = {
       .catch(AuthError, err => res.unauthorized(err))
       .catch(ValidationError, err => res.badRequest(err))
       .catch(DatabaseError, err => res.serverError(err));
+  },
+
+  publishAction (req, res) {
+    let editRequestId = req.params.editRequestId;
+
+    EditRequestRepository
+      .findOne({id: editRequestId})
+      .then(editRequestFound => {
+        if (_.isUndefined(editRequestFound)) {
+          throw new EntityNotFoundError('Peticion no encontrada');
+        }
+
+        return editRequestFound.publish();
+      })
+      .then(articlePublished => {
+        return res.json({
+          data: articlePublished
+        });
+      })
+      .catch(EntityNotFoundError, err => res.notFound(err))
+      .catch(ValidationError, err => res.badRequest(err))
+      .catch(DatabaseError, err => res.serverError(err));
   }
 }

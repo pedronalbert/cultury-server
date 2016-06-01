@@ -165,7 +165,7 @@ describe('EditRequestController', () => {
     });
   });
 
-  describe('#denyAction', () => {
+  describe.skip('#denyAction', () => {
     describe('Guest', () => {
       it('Responder 401 al no estar logeado', done => {
         guestAgent

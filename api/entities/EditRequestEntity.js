@@ -2,6 +2,8 @@
 let Promise = require('bluebird');
 let ValidationError = require('../errors/ValidationError');
 let DatabaseError = require('../errors/DatabaseError');
+let ArticlesRepository = require('../repositories/ArticlesRepository');
+let EntityNotFoundError = require('../errors/EntityNotFoundError');
 
 class EditRequestEntity {
   constructor (model) {
@@ -18,6 +20,29 @@ class EditRequestEntity {
           sails.log.error(err);
           return reject(new DatabaseError());
         });
+    });
+  }
+
+  publish () {
+    let createData = {
+      title: this.title,
+      content: this.content,
+      imageUrl: this.imageUrl,
+      category: this.category,
+    };
+
+    return new Promise((resolve, reject) => {
+      ArticlesRepository
+        .findOne({id: this.article})
+        .then(articleFound => {
+          if (_.isUndefined(articleFound)) {
+            throw new EntityNotFoundError('Artículo no encontrado');
+          }
+
+          return articleFound.update(createData);
+        })
+        .then(resolve)
+        .catch(reject)
     });
   }
 

@@ -179,5 +179,10 @@ describe('ArticlesController', () => {
           .expect(404, done);
       });
     });
+
+    //Restore destroyed
+    after(done => {
+      Article.create(articlesFixtures[0]).exec(done);
+    });
   });
 });

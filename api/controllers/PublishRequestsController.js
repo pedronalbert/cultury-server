@@ -54,8 +54,10 @@ module.exports = {
           return res.notFound(new EntityNotFoundError('Peticion no encontrada'));
         }
 
-        if (publishRequestFound.user != req.user.id) {
-          throw new AuthError('Este artículo no te pertenece');
+        if (req.user.role != 'admin' && req.user.role != 'mod') {
+          if (publishRequestFound.user != req.user.id) {
+            throw new AuthError('Este artículo no te pertenece');
+          }
         }
 
         return publishRequestFound.update(updateData);

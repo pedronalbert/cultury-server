@@ -49,7 +49,7 @@ module.exports.routes = {
   'get /edit-requests': 'EditRequestsController.index',
   'post /edit-requests': 'EditRequestsController.create',
   'get /edit-requests/:editRequestId': 'EditRequestsController.show',
-  'post /edit-requests/:editRequestId': 'EditRequestsController.update',
+  'put /edit-requests/:editRequestId': 'EditRequestsController.update',
   'post /edit-requests/:editRequestId/actions/publish': 'EditRequestsController.publishAction',
   'post /edit-requests/:editRequestId/actions/deny': 'EditRequestsController.denyAction',
   //UsersController

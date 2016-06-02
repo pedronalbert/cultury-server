@@ -15,7 +15,7 @@ module.exports = {
   },
 
   create (req, res) {
-    let createData = req.body;
+    let createData = _.pick(req.body, ['title', 'content', 'imageUrl', 'category', 'article']);
     createData.user = req.user.id;
 
     PublishRequestRepository
@@ -45,7 +45,7 @@ module.exports = {
 
   update (req, res) {
     let publishRequestId = req.params.publishRequestId;
-    let updateData = req.body;
+    let updateData = _.pick(req.body, ['title', 'content', 'imageUrl', 'category']);
 
     PublishRequestRepository
       .findOne({id: publishRequestId})

@@ -23,7 +23,7 @@ module.exports = {
   },
 
   create (req, res) {
-    let createData = req.body;
+    let createData = _.pick(req.body, ['firstName', 'lastName', 'email', 'password']);
 
     UserRepository
       .create(createData)
@@ -33,7 +33,7 @@ module.exports = {
         });
       })
       .catch(DatabaseError, err => res.serverError(err))
-      .catch(ValidationError, err => res.badRequest(err)); 
+      .catch(ValidationError, err => res.badRequest(err));
   },
 
   show (req, res) {
@@ -56,10 +56,7 @@ module.exports = {
 
   update (req, res) {
     let userId = req.params.id;
-    let updateData = _.pick(
-      req.body,
-      ['firstName', 'lastName', 'email']
-    );
+    let updateData = _.pick(req.body, ['firstName', 'lastName', 'email']);
 
     UserRepository
       .findOne({id: userId})
@@ -100,4 +97,3 @@ module.exports = {
       .catch(ValidationError, err => res.badRequest(err));
   }
 };
-

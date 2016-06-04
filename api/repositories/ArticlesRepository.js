@@ -18,7 +18,7 @@ let ArticlesRepository = {
             articlesEntities.push(new ArticleEntity(article));
           });
 
-          return resolve(articles);
+          return resolve(articlesEntities);
         })
         .catch(err => {
           sails.log.error(err);

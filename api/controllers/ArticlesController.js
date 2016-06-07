@@ -7,11 +7,19 @@ let DatabaseError = require('../errors/DatabaseError');
 
 module.exports = {
   index (req, res) {
+    let pagination = {
+      page_number: parseInt(req.param('page_number', 1)),
+      page_size: parseInt(req.param('page_size', 20))
+    };
+
     ArticlesRepository
-      .find()
-      .then(articles => res.json({
-        data: articles
-      }))
+      .paginate({}, pagination)
+      .then(data => {
+        return res.json({
+          data: data.articles,
+          meta: data.pagination
+        });
+      })
       .catch(DatabaseError, err => res.serverError(err));
   },
 

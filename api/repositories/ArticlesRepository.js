@@ -30,6 +30,47 @@ let ArticlesRepository = {
     });
   },
 
+  paginate (criteria, pagination) {
+    let page_count;
+
+    return new Promise((resolve, reject) => {
+      Article
+        .count(criteria)
+        .then(count => {
+          page_count = Math.ceil(count / pagination.page_size);
+
+          if (page_count < pagination.page_number) {
+            return resolve({
+              articles: [],
+              pagination: {
+                page_number: pagination.page_number,
+                page_size: pagination.page_size,
+                page_count: page_count
+              }
+            });
+          } else {
+            criteria.limit = pagination.page_size;
+            criteria.skip = pagination.page_size * pagination.page_number;
+
+            return ArticlesRepository.find(criteria);
+          }
+        })
+        .then(articles => {
+          return resolve({
+            articles: articles,
+            pagination: {
+              page_number: pagination.page_number,
+              page_size: pagination.page_size,
+              page_count: page_count
+            }
+          });
+        })
+        .catch(err => {
+          return reject(new DatabaseError());
+        })
+      });
+  },
+
   findOne (criteria) {
     return new Promise((resolve, reject) => {
       Article

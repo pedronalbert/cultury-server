@@ -49,7 +49,6 @@ module.exports.policies = {
   },
 
   ArticlesController: {
-    '*': 'isLoggedIn',
     create: 'isAdminOrMod',
     update: 'isAdminOrMod',
     destroy: 'isAdminOrMod'

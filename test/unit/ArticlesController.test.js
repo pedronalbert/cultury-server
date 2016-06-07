@@ -2,6 +2,7 @@
 let request = require('supertest');
 let faker = require('faker');
 let async = require('async');
+let expect = require('chai').expect;
 
 let generateNewData = () => {
   return {
@@ -25,17 +26,24 @@ describe('ArticlesController', () => {
       it('Responder 200', done => {
         userAgent
           .get(baseUrl)
-          .expect(200, done);
+          .query({
+            page_number: 1,
+            page_size: 20
+          })
+          .expect(200)
+          .end((err, res) => {
+            if (err) return done(err);
+            let response = res.body;
+
+            expect(response.data).to.be.an('array');
+            expect(response.meta.page_number).to.be.equal(1);
+            expect(response.meta.page_count).to.be.above(0);
+            expect(response.meta.page_size).to.be.equal(20);
+            done();
+          })
       });
     });
 
-    describe('Guest', () => {
-      it('Responder 401 si no está logeado', done => {
-        guestAgent
-          .get(baseUrl)
-          .expect(401, done);
-      });
-    });
   });
 
   describe('#create', () => {
@@ -83,14 +91,6 @@ describe('ArticlesController', () => {
   });
 
   describe('#show', () => {
-    describe('Guest', () => {
-      it('Responder 401 al no estár logeado', done => {
-        guestAgent
-          .get(baseUrl + '/' + articlesFixtures[0].id)
-          .expect(401, done);
-      });
-    });
-
     describe('User', () => {
       it('Responder 200', done => {
         userAgent

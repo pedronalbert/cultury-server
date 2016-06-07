@@ -1,3 +1,4 @@
+var faker = require('faker');
 /**
  * Bootstrap
  * (sails.config.bootstrap)
@@ -12,3 +13,20 @@
 module.exports.bootstrap = function(next) {
   next();
 };
+
+function articlesSeed () {
+  var articlesSeeds = [];
+
+  for (i = 0; i < 10; i++) {
+    articlesSeeds.push({
+      title: faker.lorem.text(),
+      content: faker.lorem.paragraphs(),
+      imageUrl: faker.image.imageUrl(),
+      category: faker.lorem.word(),
+      user: 1
+    });
+  }
+
+  return Article
+    .create(articlesSeeds)
+}

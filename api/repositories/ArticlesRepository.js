@@ -50,7 +50,7 @@ let ArticlesRepository = {
             });
           } else {
             criteria.limit = pagination.page_size;
-            criteria.skip = pagination.page_size * pagination.page_number;
+            criteria.skip = pagination.page_size * (pagination.page_number - 1);
 
             return ArticlesRepository.find(criteria);
           }

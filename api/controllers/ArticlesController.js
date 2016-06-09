@@ -9,7 +9,7 @@ module.exports = {
   index (req, res) {
     let pagination = {
       page_number: parseInt(req.param('page_number', 1)),
-      page_size: parseInt(req.param('page_size', 20))
+      page_size: parseInt(req.param('page_size', 10))
     };
 
     ArticlesRepository
